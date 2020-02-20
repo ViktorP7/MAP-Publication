@@ -7,6 +7,7 @@ The processing pipeline was originally written by **Dr Joseph Crispell**, and is
 The pipeline was used in a pair of M. bovis WGS studies prior to MAP work, they are:
 Crispell, J., Benton, C.H., Balaz, D., De Maio, N., Ahkmetova, A., Allen, A., Biek, R., Presho, E.L., Dale, J., Hewinson, G., Lycett, S.J., Nunez-Garcia, J., Skuce, R.A., 
 Trewby, H., Wilson, D.J., Zadoks, R.N., Delahay, R.J., Kao, R.R., 2019. Combining genomics and epidemiology to analyse bi-directional transmission of Mycobacterium bovis in a multi-host system. Elife 8.
+
 Crispell, J., Zadoks, R.N., Harris, S.R., Paterson, B., Collins, D.M., de-Lisle, G.W., Livingstone, P., Neill, M.A., Biek, R., Lycett, S.J., Kao, R.R., 
 Price-Carter, M., 2017. Using whole genome sequencing to investigate transmission in a multi-host system: bovine tuberculosis in New Zealand. BMC Genomics 18, 180.
  

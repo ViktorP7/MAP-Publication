@@ -109,4 +109,4 @@ perl CreateFastaFromFiltered_28-06-17.pl 1 MinNumberSitesBetweenVariantPositions
 ```
 
 ## Tree-building
-The resulting .fasta file can now be used as an input for RAxML. RAxML can be run via command line, or by running the R script `RunRAXML_27-06-18` 
+The resulting .fasta file can now be used as an input for RAxML. RAxML can be run via command line, or by running the R script `RunRAXML_27-06-18.R` 

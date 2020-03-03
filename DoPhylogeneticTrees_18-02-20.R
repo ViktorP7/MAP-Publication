@@ -135,8 +135,8 @@ plot.phylo(onlytree, edge.width = 15, font = 1, label.offset = 0.2,
            align.tip.label = FALSE, type="phylogram", cex = 4.8)
 
 # Add the SNP scale
-add.scale.bar(x=90, y = 50, cex = 8, lwd = 15)
-text(x=120, y =50, cex = 8, "SNPs")
+add.scale.bar(x=0, y = -1, cex = 8, lwd = 15)
+text(x=30, y =-1, cex = 8, "SNPs")
 
 # Add a legend
 legend(x=7, y=127, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
@@ -144,8 +144,8 @@ legend(x=7, y=127, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 
        bty = "n", cex = 8, y.intersp = 0.7, title = "INMV Types")
 
 # Add the group idents
-segments(x0=128, y0=c(123,72.5,67,52.5,36.5,29,9.5), y1=c(74,68,54,38,30,11,2), lwd = 5)
-text(x=130, y=c(100,70,61,46,33,20,6), c("A","B","C","D","E","F","G"), cex=8)
+segments(x0=128, y0=c(123,117.5,72.5,67,52.5,36.5,29,9.5), y1=c(118.5,74,68,54,38,30,11,2), lwd = 5)
+text(x=130, y=c(120.5,95,70,61,46,33,20,6), c("A","B","C","D","E","F","G","H"), cex=8)
 
 # Reset the margins
 par(mar=currentMar)
@@ -172,8 +172,8 @@ plot.phylo(euOnlyTree, edge.width = 10, font = 1, label.offset = 0.2,
 tiplabels(pch = 18, col = euCols,  cex = 10)
 
 # Add the SNP scale
-add.scale.bar(x=105, y=12, cex = 8, lwd = 15)
-text(x=136, y=12, cex = 8, "SNPs")
+add.scale.bar(x=0, y=0, cex = 8, lwd = 15)
+text(x=31, y=0, cex = 8, "SNPs")
 
 # Add a legend
 legend(x=120, y=220, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
@@ -188,8 +188,8 @@ legend(x=120, y=220, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
        bty = "n", cex = 8.8, y.intersp = 0.8, title = "Country")
 
 # Add the group idents
-segments(x0=154, y0=c(213.5,142,111.5,93.5,57.5,48,18), y1=c(145,114,97.5,59,49.5,19.5,6.5), lwd = 5)
-text(x=156, y=c(180,129,104,75,53,34,12), c("A","B","C","D","E","F","G"), cex=8)
+segments(x0=154, y0=c(213.5,202.5,142,111.5,93.5,57.5,48,18), y1=c(204.5,145,114,97.5,59,49.5,19.5,6.5), lwd = 5)
+text(x=156, y=c(209,170,129,104,75,53,34,12), c("A","B","C","D","E","F","G","H"), cex=8)
 
 # Reset the margins
 par(mar=currentMar)
@@ -216,8 +216,8 @@ plot.phylo(onlytree, edge.width = 15, font = 1, label.offset = 0.2,
            align.tip.label = FALSE, type="phylogram", cex = 4.8)
 
 # Add the SNP scale
-add.scale.bar(x=90, y = 50, cex = 8, lwd = 15)
-text(x=118, y =50, cex = 8, "SNPs")
+add.scale.bar(x=0, y = -1, cex = 8, lwd = 15)
+text(x=30, y =-1, cex = 8, "SNPs")
 
 # Add a legend
 legend(x=9, y=125, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
@@ -225,8 +225,8 @@ legend(x=9, y=125, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 
        bty = "n", cex = 8, y.intersp = 0.7, title = "INMV Types")
 
 # Add the group idents
-segments(x0=126, y0=c(123,72.5,67,52.5,36.5,29,9.5), y1=c(74,68,54,38,30,11,2), lwd = 5)
-text(x=127, y=c(99,70,61,45,33,20,6), c("A","B","C","D","E","F","G"), cex=8)
+segments(x0=126, y0=c(123,117.5,72.5,67,52.5,36.5,29,9.5), y1=c(118.5,74,68,54,38,30,11,2), lwd = 5)
+text(x=127, y=c(120.5,95,70,61,45,33,20,6), c("A","B","C","D","E","F","G","H"), cex=8)
 
 # Reset the margins
 par(mar=currentMar)
@@ -253,8 +253,8 @@ plot.phylo(euOnlyTree, edge.width = 12, font = 1, label.offset = 0.2,
 tiplabels(pch = 18, col = euCols,  cex = 10)
 
 # Add the SNP scale
-add.scale.bar(x=105, y=12, cex = 8, lwd = 15)
-text(x=136, y=12, cex = 8, "SNPs")
+add.scale.bar(x=0, y=0, cex = 8, lwd = 15)
+text(x=31, y=0, cex = 8, "SNPs")
 
 # Add a legend
 legend(x=120, y=220, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
@@ -269,8 +269,8 @@ legend(x=120, y=220, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
        bty = "n", cex = 8.8, y.intersp = 0.8, title = "Country")
 
 # Add the group idents
-segments(x0=153.5, y0=c(213.5,142,111.5,93.5,57.5,48,18), y1=c(145,114,97.5,59,49.5,19.5,6.5), lwd = 5)
-text(x=154.5, y=c(180,129,104,75,53,34,12), c("A","B","C","D","E","F","G"), cex=8)
+segments(x0=153.5, y0=c(213.5,202.5,142,111.5,93.5,57.5,48,18), y1=c(204.5,145,114,97.5,59,49.5,19.5,6.5), lwd = 5)
+text(x=154.5, y=c(209,170,129,104,75,53,34,12), c("A","B","C","D","E","F","G","H"), cex=8)
 
 # Reset the margins
 par(mar=currentMar)

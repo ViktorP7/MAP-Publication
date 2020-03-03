@@ -140,6 +140,56 @@ mtext(text="HERD", side=4, line=0.5, cex = 2)
 
 dev.off()
 
+
+#### Movement panel plot ####
+
+# Store the tip ranges for the groups
+tipsA <- 110:114
+tipsB <- 66:109
+tipsC <- 60:64
+tipsD <- 46:59
+tipsE <- 30:45
+tipsF <- 116:122
+tipsG <- 10:28
+tipsH <- 1:8
+
+# Save plot as .pdf file
+outputFile <- paste("IrishMoves.pdf", sep="")
+pdf(outputFile, height=70, width=80)
+
+par(bg=NA)
+par(mfrow=c(2,4))
+       
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsA], countyNames[tipsA], "Group A Map", vntrNames[tipsA])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsB], countyNames[tipsB], "Group B Map", vntrNames[tipsB])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsC], countyNames[tipsC], "Group C Map", vntrNames[tipsC])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsD], countyNames[tipsD], "Group D Map", vntrNames[tipsD])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsE], countyNames[tipsE], "Group E Map", vntrNames[tipsE])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsF], countyNames[tipsF], "Group F Map", vntrNames[tipsF])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsG], countyNames[tipsG], "Group G Map", vntrNames[tipsG])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsH], countyNames[tipsH], "Group H Map", vntrNames[tipsH])
+
+dev.off()
+
+# Save plot as .pdf file
+outputFile <- paste("IrishMoves.png", sep="")
+png(outputFile, height=4500, width=4500)
+
+par(bg=NA)
+par(mfrow=c(2,4))
+
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsA], countyNames[tipsA], "Group A Map", vntrNames[tipsA])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsB], countyNames[tipsB], "Group B Map", vntrNames[tipsB])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsC], countyNames[tipsC], "Group C Map", vntrNames[tipsC])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsD], countyNames[tipsD], "Group D Map", vntrNames[tipsD])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsE], countyNames[tipsE], "Group E Map", vntrNames[tipsE])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsF], countyNames[tipsF], "Group F Map", vntrNames[tipsF])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsG], countyNames[tipsG], "Group G Map", vntrNames[tipsG])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsH], countyNames[tipsH], "Group H Map", vntrNames[tipsH])
+
+dev.off()
+  
+
 #### Functions ####
 
 # Function to count amount of isolates and herds per each county
@@ -252,14 +302,9 @@ polygonsSpatialData <- function(polygonCoords, sampleNumbers, counties, shortCou
       
     }else{ # counties that are present on the sample list
       
-      # Get number of samples for current county
-      nSamples <- sampleNumbers[[counties[index]]][1]
-      nHerdsSamples <- sampleNumbers[[counties[index]]][2]
-      
       # Plot the polygon of the current county
       plot(polygonCoords[[counties[index]]],
            border = "black", add = TRUE, col = alpha("blue", proportion))
-      
       
       # Create a vector of herds in the current county
       currentHerds <- unique(herdnames[grep(counties[index], herdNames)])
@@ -426,3 +471,90 @@ calculateSummaryStatisticsPerQuarter <- function(statistics){
   
   return(output)
 }
+
+# Function to plot a movement map
+plotMoves <- function(ranges, polygonCoords, counties, shortCounties, birthcounties, currentcounties, title, vntrs){
+
+  # Create empty plot, with input of ranges
+  plot(x=NA, y=NA,
+       xlim = c(ranges[1], ranges[2]), 
+       ylim = c(ranges[3], ranges[4]),
+       main = title, xlab = "", ylab = "",
+       bty = "n", axes = FALSE, cex.main = 7)
+
+  polygonsMoveData(polygonCoords, counties, shortCounties, birthcounties, currentcounties)
+  
+  legend("topleft", legend = c("INMVs Present:", paste(names(table(vntrs)),"-",table(vntrs))), cex = 7, bty = "n")
+
+}
+
+# Fill polygons on map plot for movement arrow plot
+polygonsMoveData <- function(polygonCoords, counties, shortCounties, birthcounties, currentcounties) {
+  
+  for(index in 1:length(counties)) {
+    
+    # Add county name
+    if(counties[index] %in% unique(currentcounties) == TRUE){
+      
+      # Plot the polygon of the current county
+      plot(polygonCoords[[counties[index]]],
+           border = "black", add = TRUE, col = alpha("blue", 0.5))
+      
+      # Add county name
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      
+    }else if(counties[index] %in% unique(birthcounties) == TRUE){
+      
+      # Plot the polygon of the current county
+      plot(polygonCoords[[counties[index]]],
+           border = "black", add = TRUE, col = alpha("red", 0.5))
+      
+      # Add county name
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+    
+    } else{
+
+      # Plot the polygon of the current county
+      plot(polygonCoords[[counties[index]]],
+           border = "black", add = TRUE)      
+    }
+  }
+  
+  # Initialise vector to store birth/current combos
+  combo <- c()
+  
+  # Loop thru each entry in the names
+  for(index in 1:length(currentcounties)){
+    
+    # Check if there is an NA in the current position in either birth or current
+    if(is.na(currentcounties[index]) || is.na(birthcounties[index]) || birthcounties[index] == "n/a"){
+      
+      next
+    } else if(currentcounties[index] == birthcounties[index]){
+      
+      next
+    } else{
+      
+      # Append the combo into the combo vector
+      combo <- append(combo, paste(birthcounties[index], "_", currentcounties[index]))
+    }
+  }  
+  
+  # Loop thru the combo vector
+  for(item in unique(combo)){
+      
+    # Weight arrow thickness based on how many occurences of a thing
+    weight <- sum(combo == item)
+      
+    # Split apart the names
+    birth <- strsplit(item, split = " _ ")[[1]][1]
+    current <- strsplit(item, split = " _ ")[[1]][2]
+      
+    # Get the rough centre of each polygon
+    meanB <- coordinates(polygonCoords[[birth]])
+    meanC <- coordinates(polygonCoords[[current]])
+      
+    arrows(meanB[1], meanB[2], meanC[1], meanC[2], col = alpha("black", 0.4), length = 0.5, lwd = weight*3+15)
+  }
+}
+

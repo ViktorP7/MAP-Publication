@@ -40,10 +40,7 @@ median(allDist[grep("Clare", herdNames), grep("Clare", herdNames)], na.rm=T)
 range(allDist[grep("Westmeath", herdNames)[4],grep("Westmeath", herdNames)],na.rm=T)
 range(allDist[grep("Westmeath", herdNames)[5],grep("Westmeath", herdNames)],na.rm=T)
 
-# Group A stats
-groupA <- extract.clade(onlytree, node = 198)
-groupAmat <- cophenetic(groupA)
-max(groupAmat)
+#### European groups ####
 
 # Group A europe
 euroA <- extract.clade(euOnlyTree, node = 365)

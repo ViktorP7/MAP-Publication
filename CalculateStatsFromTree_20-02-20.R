@@ -40,10 +40,16 @@ median(allDist[grep("Clare", herdNames), grep("Clare", herdNames)], na.rm=T)
 range(allDist[grep("Westmeath", herdNames)[4],grep("Westmeath", herdNames)],na.rm=T)
 range(allDist[grep("Westmeath", herdNames)[5],grep("Westmeath", herdNames)],na.rm=T)
 
+# Clare outliers distance to group A
+allDist[65,110]
+
+# Max dist within group B subgroup of 21
+max(allDist[89:109, 89:109], na.rm = T)
+
 #### European groups ####
 
 # Group A europe
-euroA <- extract.clade(euOnlyTree, node = 365)
+euroA <- extract.clade(euOnlyTree, node = 421)
 euroAmat <- cophenetic(euroA)
 
 for(index in 1:nrow(euroAmat)){
@@ -53,8 +59,8 @@ for(index in 1:nrow(euroAmat)){
 
 euroAmat[upper.tri(euroAmat)] <- NA
 
-# Groups B
-euroB <- extract.clade(euOnlyTree, node = 334)
+# Group B europe
+euroB <- extract.clade(euOnlyTree, node = 366)
 euroBmat <- cophenetic(euroB)
 
 for(index in 1:nrow(euroBmat)){
@@ -65,7 +71,7 @@ for(index in 1:nrow(euroBmat)){
 euroBmat[upper.tri(euroBmat)] <- NA
 
 # Group C
-euroC <- extract.clade(euOnlyTree, node = 316)
+euroC <- extract.clade(euOnlyTree, node = 334)
 euroCmat <- cophenetic(euroC)
 
 for(index in 1:nrow(euroCmat)){
@@ -76,7 +82,7 @@ for(index in 1:nrow(euroCmat)){
 euroCmat[upper.tri(euroCmat)] <- NA
 
 # Group D
-euroD <- extract.clade(euOnlyTree, node = 278)
+euroD <- extract.clade(euOnlyTree, node = 316)
 euroDmat <- cophenetic(euroD)
 
 for(index in 1:nrow(euroDmat)){
@@ -86,19 +92,19 @@ for(index in 1:nrow(euroDmat)){
 
 euroDmat[upper.tri(euroDmat)] <- NA
 
-# Group F
-euroF <- extract.clade(euOnlyTree, node = 240)
-euroFmat <- cophenetic(euroF)
+# Group E
+euroE <- extract.clade(euOnlyTree, node = 278)
+euroEmat <- cophenetic(euroE)
 
-for(index in 1:nrow(euroFmat)){
+for(index in 1:nrow(euroEmat)){
   
-  euroFmat[index, index] <- NA
+  euroEmat[index, index] <- NA
 }
 
-euroFmat[upper.tri(euroFmat)] <- NA
+euroEmat[upper.tri(euroEmat)] <- NA
 
 # Group G
-euroG <- extract.clade(euOnlyTree, node = 229)
+euroG <- extract.clade(euOnlyTree, node = 240)
 euroGmat <- cophenetic(euroG)
 
 for(index in 1:nrow(euroGmat)){
@@ -107,6 +113,17 @@ for(index in 1:nrow(euroGmat)){
 }
 
 euroGmat[upper.tri(euroGmat)] <- NA
+
+# Group H
+euroH <- extract.clade(euOnlyTree, node = 229)
+euroHmat <- cophenetic(euroH)
+
+for(index in 1:nrow(euroHmat)){
+  
+  euroHmat[index, index] <- NA
+}
+
+euroHmat[upper.tri(euroHmat)] <- NA
 
 
 # Run function to find similar isolates for group A
@@ -121,12 +138,17 @@ similarsC <- findSimilars(euroCmat, 30, counties)
 # Group D
 similarsD <- findSimilars(euroDmat, 30, counties)
 
+# Group E
+similarsE <- findSimilars(euroEmat, 30, counties)
+
 # Run function to find similars for group F
 similarsF <- findSimilars(euroFmat, 30, counties)
 
 # Group G
 similarsG <- findSimilars(euroGmat, 30, counties)
 
+# Group H
+similarsH <- findSimilars(euroHmat, 30, counties)
 
 #### Functions ####
 

@@ -103,6 +103,12 @@ for(index in 1:nrow(allDist)){
 herdNames <- getNames(allDist, "Herd")
 euHerds <- getNames(euDist, "Herd")
 
+# Get current county, birth county names and sameness
+countyNames <- getNames(allDist, "CCounty")
+birthcountyNames <- getNames(allDist, "BCounty")
+sameness <- getNames(allDist, "Same")
+
+
 # Get VNTR names
 vntrNames <- getNames(allDist, "VNTR")
 
@@ -115,13 +121,16 @@ euCols <- makeRegionColours(euOnlyTree$tip.label)
 # Simplify the labels
 simpleLabels <- deconstructLabels(onlytree$tip.label, counties, shortCounties)
 
+# Deal with stubborn label
+simpleLabels[115] <- "14-3960 DL 1 (UK)"
+
 # Assign simple labels
 onlytree$tip.label <- simpleLabels
 
 #### Tree plotting (.png) ####
 
 # Save plot as .png file (Ireland)
-outputFile <- paste("VNTR_Tree.png", sep="")
+outputFile <- paste("VNTR_Tree_29-04-20.png", sep="")
 png(outputFile, height=5000, width=4500)
 
 # Set margins to nothing
@@ -139,13 +148,13 @@ add.scale.bar(x=0, y = -1, cex = 8, lwd = 15)
 text(x=30, y =-1, cex = 8, "SNPs")
 
 # Add a legend
-legend(x=7, y=127, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
+legend(x=7, y=122, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
        text.col = c("red", "deepskyblue3", "darkorange3", "black", "darkgreen"), 
        bty = "n", cex = 8, y.intersp = 0.7, title = "INMV Types")
 
 # Add the group idents
-segments(x0=128, y0=c(123,117.5,72.5,67,52.5,36.5,29,9.5), y1=c(118.5,74,68,54,38,30,11,2), lwd = 5)
-text(x=130, y=c(120.5,95,70,61,46,33,20,6), c("A","B","C","D","E","F","G","H"), cex=8)
+segments(x0=135, y0=c(123,117.5,72.5,67,52.5,36.5,29,9.5), y1=c(118.5,74,68,54,38,30,11,2), lwd = 5)
+text(x=137, y=c(120.5,95,70,61,46,33,20,6), c("A","B","C","D","E","F","G","H"), cex=8)
 
 # Reset the margins
 par(mar=currentMar)
@@ -154,7 +163,7 @@ dev.off()
 
 
 # Make EU plot
-outputFile <- paste("EU-Tree.png", sep="")
+outputFile <- paste("EU-Tree_14-04-20.png", sep="")
 png(outputFile, height=5000, width=4500)
 
 # Set margins to nothing
@@ -202,7 +211,7 @@ dev.off()
 # Note different settings to .png
 
 # Save plot as .pdf file (Ireland)
-outputFile <- paste("VNTR_Tree.pdf", sep="")
+outputFile <- paste("VNTR_Tree_29-04-20.pdf", sep="")
 pdf(outputFile, height=75, width=75)
 
 # Set margins to nothing
@@ -220,13 +229,13 @@ add.scale.bar(x=0, y = -1, cex = 8, lwd = 15)
 text(x=30, y =-1, cex = 8, "SNPs")
 
 # Add a legend
-legend(x=9, y=125, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
+legend(x=9, y=122, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
        text.col = c("red", "deepskyblue3", "darkorange3", "black", "darkgreen"), 
        bty = "n", cex = 8, y.intersp = 0.7, title = "INMV Types")
 
 # Add the group idents
-segments(x0=126, y0=c(123,117.5,72.5,67,52.5,36.5,29,9.5), y1=c(118.5,74,68,54,38,30,11,2), lwd = 5)
-text(x=127, y=c(120.5,95,70,61,45,33,20,6), c("A","B","C","D","E","F","G","H"), cex=8)
+segments(x0=130.5, y0=c(123,117.5,72.5,67,52.5,36.5,29,9.5), y1=c(118.5,74,68,54,38,30,11,2), lwd = 5)
+text(x=132.5, y=c(120.5,95,70,61,45,33,20,6), c("A","B","C","D","E","F","G","H"), cex=8)
 
 # Reset the margins
 par(mar=currentMar)
@@ -235,7 +244,7 @@ dev.off()
 
 
 # Make EU plot pdf
-outputFile <- paste("EU-Tree.pdf", sep="")
+outputFile <- paste("EU-Tree_14-04-20.pdf", sep="")
 pdf(outputFile, height=75, width=75)
 
 # Set margins to nothing
@@ -344,7 +353,7 @@ getCVRLLabels <- function(isoTable, TheTree){
         herd <- strsplit(isoTable[row,"Herd Ref"], split = " ")[[1]][2]
         
         newname <- paste(nameVector[index], "_", isoTable[row, "Herd Location"], "_", herd, "_",
-                         isoTable[row,"INMV Group"], "_", isoTable[row, "County of Birth"])
+                         isoTable[row,"INMV Group"], "_", isoTable[row, "County of Birth"], "_", isoTable[row, "Herd of Birth"])
         nameVector[index] <- newname
       }else{
         
@@ -528,6 +537,17 @@ getNames <- function(mat, chosen){
       rowcolNames[index] <- vRow
     }
     return(rowcolNames)
+  } else if(chosen == "Same"){
+    
+    # Loop thru and split off what's needed and fill into vectors
+    for(index in 1:length(rowcolNames)){
+      
+      # Store row name
+      vRow <- strsplit(colnames(mat)[index], split = "_")[[1]][6]
+      
+      rowcolNames[index] <- vRow
+    }
+    return(rowcolNames)
   }
 }
 
@@ -629,7 +649,7 @@ deconstructLabels <- function(tiplabel, counties, shortCounties){
     # Split up the different parts of the tip label
     one <- strsplit(tiplabel[index], split = "_")[[1]][2]
     two <- strsplit(tiplabel[index], split = "_")[[1]][3]
-    date <- strsplit(tiplabel[index], split = "-")[[1]][1]
+    date <- strsplit(tiplabel[index], split = "_")[[1]][1]
     
     # Find which index in counties the tip county is and store shortened version
     short <- shortCounties[which(one == counties)]
@@ -639,21 +659,29 @@ deconstructLabels <- function(tiplabel, counties, shortCounties){
     
     # Store birth location
     birth <- strsplit(tiplabel[index], split = "_")[[1]][5]
+
     
-    # Check if the birth county is equal to current
-    if(grepl(one, birth) == TRUE){
+    # Store sameness
+    same <- strsplit(tiplabel[index], split = "_")[[1]][6]
+    
+    # Check if it's the same county
+    if(same == "Same"){
       
       newtips[index] <- herd
-      
-    }else if(grepl("n/a", birth) == TRUE || is.na(birth) == TRUE){
+    } else if(same == "n/a" || is.na(same) == TRUE){
       
       yoke <- paste(herd,"*", collapse = NULL)
-      
+    
       newtips[index] <- yoke
+    
     } else {
       
-      shortB <- shortCounties[which(birth == counties)]
+      if(birth == "U.K. Import"){
+        shortB <- "UK"
+      } else{
       
+        shortB <- shortCounties[which(birth == counties)]
+      }
       birthstring <- paste("(",shortB,")", sep = "")
       
       thing <- paste(herd, birthstring)

@@ -7,6 +7,8 @@ library(sp)
 library(raster)
 library(gplots)
 library(maptools)
+library(shape)
+
 
 # Create path strings
 pathHerdStats <- "C:/Users/UCD/Documents/Lab/HerdTbStatistics_2010-2019.csv"
@@ -55,7 +57,7 @@ maxNSamples <- sampleMax(sampleNumbers)
 #### Plot map as .png ####
 
 # Save plot as .png file
-outputFile <- paste("IrishMap.png", sep="")
+outputFile <- paste("IrishMap_14-04-20.png", sep="")
 png(outputFile, height=4500, width=4500)
 
 par(bg=NA)
@@ -88,7 +90,7 @@ dev.off()
 #### Plot map as .pdf ####
 
 # Save plot as .pdf file
-outputFile <- paste("IrishMap.pdf", sep="")
+outputFile <- paste("IrishMap_14-04-20.pdf", sep="")
 pdf(outputFile, height=75, width=75)
 
 par(bg=NA)
@@ -124,7 +126,7 @@ dev.off()
 counterMatrix <- getYearCounts(herdNames, allDist)
 
 # Save plot as .pdf file
-outputFile <- paste("TemporalIsolates.pdf", sep="")
+outputFile <- paste("TemporalIsolates_14-04-20.pdf", sep="")
 pdf(outputFile, height=20, width=15)
 
 par(cex.main = 2.5, cex.lab = 1.5)
@@ -144,51 +146,131 @@ dev.off()
 #### Movement panel plot ####
 
 # Store the tip ranges for the groups
-tipsA <- 110:114
+tipsA <- 110:115
 tipsB <- 66:109
 tipsC <- 60:64
 tipsD <- 46:59
 tipsE <- 30:45
-tipsF <- 116:122
+tipsF <- 117:123
 tipsG <- 10:28
 tipsH <- 1:8
 
 # Save plot as .pdf file
-outputFile <- paste("IrishMoves.pdf", sep="")
+outputFile <- paste("IrishMoves_20-04-20.pdf", sep="")
 pdf(outputFile, height=70, width=80)
 
 par(bg=NA)
 par(mfrow=c(2,4))
        
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsA], countyNames[tipsA], "Group A Map", vntrNames[tipsA])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsB], countyNames[tipsB], "Group B Map", vntrNames[tipsB])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsC], countyNames[tipsC], "Group C Map", vntrNames[tipsC])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsD], countyNames[tipsD], "Group D Map", vntrNames[tipsD])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsE], countyNames[tipsE], "Group E Map", vntrNames[tipsE])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsF], countyNames[tipsF], "Group F Map", vntrNames[tipsF])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsG], countyNames[tipsG], "Group G Map", vntrNames[tipsG])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsH], countyNames[tipsH], "Group H Map", vntrNames[tipsH])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsA], countyNames[tipsA], "Group A Map", vntrNames[tipsA], sameness[tipsA], herdNames[tipsA])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsB], countyNames[tipsB], "Group B Map", vntrNames[tipsB], sameness[tipsB], herdNames[tipsB])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsC], countyNames[tipsC], "Group C Map", vntrNames[tipsC], sameness[tipsC], herdNames[tipsC])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsD], countyNames[tipsD], "Group D Map", vntrNames[tipsD], sameness[tipsD], herdNames[tipsD])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsE], countyNames[tipsE], "Group E Map", vntrNames[tipsE], sameness[tipsE], herdNames[tipsE])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsF], countyNames[tipsF], "Group F Map", vntrNames[tipsF], sameness[tipsF], herdNames[tipsF])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsG], countyNames[tipsG], "Group G Map", vntrNames[tipsG], sameness[tipsG], herdNames[tipsG])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsH], countyNames[tipsH], "Group H Map", vntrNames[tipsH], sameness[tipsH], herdNames[tipsH])
 
 dev.off()
 
-# Save plot as .pdf file
-outputFile <- paste("IrishMoves.png", sep="")
-png(outputFile, height=4500, width=4500)
+# Save plot as .png file
+outputFile <- paste("IrishMoves_20-04-20.png", sep="")
+png(outputFile, height=4500, width=5500)
 
 par(bg=NA)
 par(mfrow=c(2,4))
 
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsA], countyNames[tipsA], "Group A Map", vntrNames[tipsA])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsB], countyNames[tipsB], "Group B Map", vntrNames[tipsB])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsC], countyNames[tipsC], "Group C Map", vntrNames[tipsC])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsD], countyNames[tipsD], "Group D Map", vntrNames[tipsD])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsE], countyNames[tipsE], "Group E Map", vntrNames[tipsE])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsF], countyNames[tipsF], "Group F Map", vntrNames[tipsF])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsG], countyNames[tipsG], "Group G Map", vntrNames[tipsG])
-plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsH], countyNames[tipsH], "Group H Map", vntrNames[tipsH])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsA], countyNames[tipsA], "Group A Map", vntrNames[tipsA], sameness[tipsA], herdNames[tipsA])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsB], countyNames[tipsB], "Group B Map", vntrNames[tipsB], sameness[tipsB], herdNames[tipsB])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsC], countyNames[tipsC], "Group C Map", vntrNames[tipsC], sameness[tipsC], herdNames[tipsC])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsD], countyNames[tipsD], "Group D Map", vntrNames[tipsD], sameness[tipsD], herdNames[tipsD])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsE], countyNames[tipsE], "Group E Map", vntrNames[tipsE], sameness[tipsE], herdNames[tipsE])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsF], countyNames[tipsF], "Group F Map", vntrNames[tipsF], sameness[tipsF], herdNames[tipsF])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsG], countyNames[tipsG], "Group G Map", vntrNames[tipsG], sameness[tipsG], herdNames[tipsG])
+plotMoves(ranges, polygonCoords, counties, shortCounties, birthcountyNames[tipsH], countyNames[tipsH], "Group H Map", vntrNames[tipsH], sameness[tipsH], herdNames[tipsH])
 
 dev.off()
   
+
+#### Example herds plot ####
+
+# Get WH1 indices
+whgroup = which(herdNames %in% "Westmeath _ 1")
+whg1 = whgroup[1:3]
+whg2 = whgroup[4]
+whg3 = whgroup[5]
+
+# Create example tree
+wh1tree <- makeExampleTree(whg1,whg2,whg3,allDist,onlytree)
+
+# Assign colours 
+wh1cols <- c(1:length(wh1tree$tip.label)) 
+wh1cols[7] <- "gold"
+wh1cols[6] <- "darkgreen"
+wh1cols[c(1:5)] <- "red"
+
+outputFile <- paste("WH1-0_06-05-20.pdf", sep="")
+pdf(outputFile, height=85, width=75)
+
+# Set margins to nothing
+currentMar <- par()$mar
+par(mar=c(0,0,0,0), fig=c(0,1,0,1))
+par(bg=NA)
+
+# Create empty plot, with input of limits from above function
+plot(x=NA, y=NA,
+     xlim = c(ranges[1], ranges[2]), 
+     ylim = c(ranges[3], ranges[4]),
+     main = "", xlab = "", ylab = "",
+     bty = "n", axes = FALSE)
+
+# Plot county polygons and related sample data
+makeExampleHerd(whg1,whg2,whg3,counties,polygonCoords,shortCounties,allDist,countyNames, birthcountyNames)
+
+
+# Add a legend
+legend("bottomright", legend = c("A", "B", "G", "A, B, G"), 
+       text.col = c("gold", "darkgreen", "red", "blue"), 
+       bty = "n", cex = 12, title = "Westmeath 1 Strains", title.col = "black")
+
+
+# Set figure parameters to top right corner 
+par(fig=c(0,0.38,0.75,1), new=T)
+
+
+# Plot VNTR tree
+plot.phylo(wh1tree, edge.width = 12, font = 1, label.offset = 0.2, 
+           tip.color = wh1cols,
+           align.tip.label = FALSE, type="phylogram", cex = 8)
+
+# Add the SNP scale
+add.scale.bar(x=10, y = 1.5, cex = 6, lwd = 15)
+text(x=55, y =1.5, cex = 6, "SNPs")
+
+
+dev.off()
+
+
+# Get CE6 indices
+cegroup = which(herdNames %in% "Clare _ 6")
+ceg1 = cegroup[1]
+ceg2 = cegroup[2:6]
+ceg3 = NA
+
+
+# Get LH1 indices
+lhgroup = which(herdNames %in% "Louth _ 1")
+lhg1 = lhgroup[2]
+lhg2 = lhgroup[1]
+lhg3 = lhgroup[3:5]
+
+
+# Get C2 indices
+cgroup = which(herdNames %in% "Cork _ 2")
+cg1 = cgroup[2]
+cg2 = cgroup[1]
+cg3 = NA
+
 
 #### Functions ####
 
@@ -473,7 +555,7 @@ calculateSummaryStatisticsPerQuarter <- function(statistics){
 }
 
 # Function to plot a movement map
-plotMoves <- function(ranges, polygonCoords, counties, shortCounties, birthcounties, currentcounties, title, vntrs){
+plotMoves <- function(ranges, polygonCoords, counties, shortCounties, birthcounties, currentcounties, title, vntrs, sames, herds){
 
   # Create empty plot, with input of ranges
   plot(x=NA, y=NA,
@@ -482,14 +564,21 @@ plotMoves <- function(ranges, polygonCoords, counties, shortCounties, birthcount
        main = title, xlab = "", ylab = "",
        bty = "n", axes = FALSE, cex.main = 7)
 
-  polygonsMoveData(polygonCoords, counties, shortCounties, birthcounties, currentcounties)
+  legend("topleft", legend = c("INMV Count:", paste(names(table(vntrs)),"-",table(vntrs))), cex = 8, bty = "n")
   
-  legend("topleft", legend = c("INMVs Present:", paste(names(table(vntrs)),"-",table(vntrs))), cex = 7, bty = "n")
+  
+  legend("bottomright", legend = c(1,2,3,4,5,6), 
+         title = "Num. Moves to Herd", bty="n", cex=8,
+         pch = c(17,17,17,17,17,17), col = alpha("gold", 0.9), pt.bg = alpha("gold", 0.65), 
+         pt.cex = c(13,16,19,21,24,27), ncol = 2)
+  
+  polygonsMoveData(polygonCoords, counties, shortCounties, birthcounties, currentcounties, sames, herds)
+  
 
 }
 
 # Fill polygons on map plot for movement arrow plot
-polygonsMoveData <- function(polygonCoords, counties, shortCounties, birthcounties, currentcounties) {
+polygonsMoveData <- function(polygonCoords, counties, shortCounties, birthcounties, currentcounties, sames, herds) {
   
   for(index in 1:length(counties)) {
     
@@ -523,6 +612,9 @@ polygonsMoveData <- function(polygonCoords, counties, shortCounties, birthcounti
   # Initialise vector to store birth/current combos
   combo <- c()
   
+  # Initalise vector to store intra county movements
+  intra <- c()
+  
   # Loop thru each entry in the names
   for(index in 1:length(currentcounties)){
     
@@ -532,7 +624,12 @@ polygonsMoveData <- function(polygonCoords, counties, shortCounties, birthcounti
       next
     } else if(currentcounties[index] == birthcounties[index]){
       
-      next
+      if(sames[index] == "Same"){
+        next
+      } else{
+        
+        intra <- append(intra, paste(herds[index], "-", birthcounties[index])) 
+      }
     } else{
       
       # Append the combo into the combo vector
@@ -556,5 +653,191 @@ polygonsMoveData <- function(polygonCoords, counties, shortCounties, birthcounti
       
     arrows(meanB[1], meanB[2], meanC[1], meanC[2], col = alpha("black", 0.4), length = 0.5, lwd = weight*3+15)
   }
+  
+  # Loop thru the intra vector
+  for(thingy in unique(intra)){
+    
+    # Weigh point based on how many moves to that herd
+    intraweight <- sum(intra == thingy)
+    
+    # Split apart the birth county
+    intrabirth <- strsplit(thingy, split = "-")[[1]][2]
+    
+    # Plot random points to indicate movement to that herd
+    points(spsample(polygonCoords[[trimws(intrabirth)]], n=1, type = "random"),
+           pch = 17, col = alpha("gold", 0.9), bg = alpha("gold", 0.65), cex = 10+3*intraweight)
+  }
 }
 
+# Function to find isolates within 10 SNPs of a given group of tips
+proxFinder <- function(sometips, allDist){
+  
+  # Create vectors for the output
+  out = c()
+  
+  # Check if any other isolates are within 10 SNPs of each group by looping thru matrix
+  for(i in sometips){
+    
+    for(col in 1:ncol(allDist)){
+      
+      if(col %in% sometips){
+        
+        next
+      }else if(col %in% out){
+        
+        next
+        
+      }else if(allDist[i,col] <= 10){
+        
+        out = append(out, col)
+      }
+    }  
+  }
+  return(out)
+}
+
+# Function to plot labelled arrows for groups
+plotGroupArrows <- function(group, birthcountyNames, currentcounties, polygonCoords, allDist, colour){
+  
+  # Add movement arrows for each group
+  for(loc in group){
+    
+    roll = runif(4, min = -0.15, max = 0.15)
+    
+    # Get current & birth locations
+    birth = birthcountyNames[loc]
+    current = currentcounties[loc]
+    
+    # Get the rough centre of each polygon
+    meanB <- coordinates(polygonCoords[[birth]])
+    meanC <- coordinates(polygonCoords[[current]])
+    
+    # Get the name of isolate and remove year prefix
+    withprefix <- strsplit(rownames(allDist)[loc], split = "_")[[1]][1]
+    noprefix <- strsplit(withprefix, split = "-")[[1]][2]
+    
+    Arrows(meanB[1]+roll[1], meanB[2]+roll[2], meanC[1], meanC[2], col = alpha(colour, 0.6), length = 5, lwd = 25, arr.type = "circle", arr.length = 2, arr.width = 2)
+    midx = ((meanC[1]) - (((meanC[1]) - (meanB[1]+roll[1]))/2))
+    midy = ((meanC[2]) - (((meanC[2]) - (meanB[2]+roll[2]))/2))
+    m = atan(((meanC[2]) - (meanB[2]+roll[2]))/((meanC[1]) - (meanB[1]+roll[1])))*(180/pi)
+    text(x=midx, y = midy, labels = noprefix, cex = 5,srt=m)
+  }
+}
+
+# Function to plot example herd county and closely related locations
+makeExampleHerd <- function(g1, g2, g3, counties, polygonCoords, shortCounties, allDist, currentcounties, birthcountyNames){
+  
+  # Find closely related isolates to groups
+  p1 = proxFinder(g1, allDist)
+  p2 = proxFinder(g2, allDist)
+  
+  if(is.na(g3) == FALSE){
+    p3 = proxFinder(g3, allDist)
+  }
+  
+  for(index in 1:length(counties)) {
+    
+    # Add county name
+    if(counties[index] %in% unique(currentcounties[p1]) == TRUE){
+      
+      # Plot the polygon of the current county
+      plot(polygonCoords[[counties[index]]],
+           border = "black", add = TRUE, col = alpha("red", 0.5))
+      
+      # Add county name
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      
+    }else if(counties[index] %in% unique(currentcounties[p2]) == TRUE){
+      
+      # Plot the polygon of the current county
+      plot(polygonCoords[[counties[index]]],
+           border = "black", add = TRUE, col = alpha("darkgreen", 0.5))
+      
+      # Add county name
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      
+    } else if(is.na(g3) == FALSE && counties[index] %in% unique(currentcounties[p3]) == TRUE){
+      
+      # Plot the polygon of the current county
+      plot(polygonCoords[[counties[index]]],
+           border = "black", add = TRUE, col = alpha("gold", 0.5))
+      
+      # Add county name
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      
+    } else {
+      
+      # Plot the polygon of the current county
+      plot(polygonCoords[[counties[index]]],
+           border = "black", add = TRUE)      
+    }
+    
+    if(counties[index] %in% unique(currentcounties[g1]) == TRUE){
+      
+      # Plot the polygon of the current county
+      plot(polygonCoords[[counties[index]]],
+           border = "black", add = TRUE, col = alpha("blue", 0.5))
+      
+      # Add county name
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      
+    }
+  }
+  
+  # Add movement arrows for each group
+  plotGroupArrows(g1, birthcountyNames, currentcounties, polygonCoords, allDist, "red")
+  
+  if(is.null(p1) == FALSE){
+    
+    # Add movement arrows for each group
+    plotGroupArrows(p1, birthcountyNames, currentcounties, polygonCoords, allDist, "red")
+  }
+  
+  # Add movement arrows for each group
+  plotGroupArrows(g2, birthcountyNames, currentcounties, polygonCoords, allDist, "darkgreen")
+  
+  if(is.null(p2) == FALSE){
+    
+    plotGroupArrows(p2, birthcountyNames, currentcounties, polygonCoords, allDist, "darkgreen")
+    
+  }
+  
+  if(is.na(g3) == FALSE){
+    
+    plotGroupArrows(g3, birthcountyNames, currentcounties, polygonCoords, allDist, "gold")
+    
+    if(is.null(p3) == FALSE){
+      plotGroupArrows(p3, birthcountyNames, currentcounties, polygonCoords, allDist, "gold")
+    }  
+  }
+  
+}
+
+# Function to plot tree snippet for example herd
+makeExampleTree <- function(g1, g2, g3, allDist, tree){
+ 
+  # Find closely related isolates to groups
+  p1 = proxFinder(g1, allDist)
+  p2 = proxFinder(g2, allDist)
+  
+  if(is.na(g3) == FALSE){
+    p3 = proxFinder(g3, allDist)
+  } 
+  
+  # Combine groups to make vector of tips to keep
+  if(is.na(g3) == FALSE){
+    tipstokeep <- sort(c(g1,g2,g3,p1,p2,p3))
+  } else{
+    tipstokeep <- sort(c(g1,g2,p1,p2))
+  }
+  
+  
+  # Make vector of tips to dump
+  tipstodump <- c(1:length(tree$tip.label))
+  tipstodump = tipstodump[-tipstokeep]
+  
+  # Create example tree
+  exampletree <- drop.tip(tree, tipstodump)
+  
+  return(exampletree)
+}

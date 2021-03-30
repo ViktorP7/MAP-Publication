@@ -11,6 +11,10 @@ table(vntrNames)
 # Herds with more than 1 isolate
 sum(table(herdNames)>1)
 
+# Find how many herds have multiple VNTRs
+multivntr <- findHerdsWithMultiVNTR(herdNames, vntrNames)
+table(multivntr)
+
 # Max SNP distance
 max(allDist, na.rm = T)
 
@@ -18,6 +22,12 @@ max(allDist, na.rm = T)
 range(allDist[which(vntrNames == 1),which(vntrNames == 1)], na.rm=T)
 range(allDist[which(vntrNames == 2),which(vntrNames == 2)], na.rm=T)
 range(allDist[which(vntrNames == 3),which(vntrNames == 3)], na.rm=T)
+range(allDist[which(vntrNames == 13),which(vntrNames == 13)], na.rm=T)
+
+# Median SNP distances for INMV 1 & 2
+median(allDist[which(vntrNames == 1),which(vntrNames == 1)], na.rm=T)
+median(allDist[which(vntrNames == 2),which(vntrNames == 2)], na.rm=T)
+median(allDist[which(vntrNames == 13),which(vntrNames == 13)], na.rm=T)
 
 # INMV 116 proximity to other isolates
 range(allDist[which(vntrNames == 116),], na.rm=T)
@@ -25,6 +35,20 @@ range(allDist[which(vntrNames == 116),], na.rm=T)
 # INMV 3 isolates closest neighbour
 min(allDist[which(vntrNames == 3)[1],], na.rm=T)
 min(allDist[which(vntrNames == 3)[2],], na.rm=T)
+
+# Look at Group A on Irish tree
+irishA <- extract.clade(onlytree, node = 337)
+length(irishA$tip.label)
+distA <- cophenetic.phylo(irishA)
+countiesA <- findSimpleCounties(rownames(distA))
+length(table(countiesA))
+
+# Look at Group H on Irish tree
+irishH <- extract.clade(onlytree, node = 212)
+length(irishH$tip.label)
+distH <- cophenetic.phylo(irishH)
+countiesH <- findSimpleCounties(rownames(distH))
+length(table(countiesH))
 
 # Amount of Cork isolates & SNP distances
 length(grep("Cork", herdNames))
@@ -37,19 +61,19 @@ range(allDist[grep("Clare", herdNames), grep("Clare", herdNames)], na.rm=T)
 median(allDist[grep("Clare", herdNames), grep("Clare", herdNames)], na.rm=T)
 
 # Westmeath 1 stats
-range(allDist[grep("Westmeath", herdNames)[4],grep("Westmeath", herdNames)],na.rm=T)
-range(allDist[grep("Westmeath", herdNames)[5],grep("Westmeath", herdNames)],na.rm=T)
+range(allDist[grep("Westmeath _ 1", herdNames)[4],grep("Westmeath _ 1", herdNames)],na.rm=T)
+range(allDist[grep("Westmeath _ 1", herdNames)[5],grep("Westmeath _ 1", herdNames)],na.rm=T)
 
 # Clare outliers distance to group A
-allDist[65,110]
+allDist[61,111]
 
 # Max dist within group B subgroup of 21
-max(allDist[89:109, 89:109], na.rm = T)
+max(allDist[165:196, 165:196], na.rm = T)
 
 #### European groups ####
 
 # Group A europe
-euroA <- extract.clade(euOnlyTree, node = 421)
+euroA <- extract.clade(euOnlyTree, node = 505)
 euroAmat <- cophenetic(euroA)
 
 for(index in 1:nrow(euroAmat)){
@@ -60,7 +84,7 @@ for(index in 1:nrow(euroAmat)){
 euroAmat[upper.tri(euroAmat)] <- NA
 
 # Group B europe
-euroB <- extract.clade(euOnlyTree, node = 366)
+euroB <- extract.clade(euOnlyTree, node = 456)
 euroBmat <- cophenetic(euroB)
 
 for(index in 1:nrow(euroBmat)){
@@ -71,7 +95,7 @@ for(index in 1:nrow(euroBmat)){
 euroBmat[upper.tri(euroBmat)] <- NA
 
 # Group C
-euroC <- extract.clade(euOnlyTree, node = 334)
+euroC <- extract.clade(euOnlyTree, node = 418)
 euroCmat <- cophenetic(euroC)
 
 for(index in 1:nrow(euroCmat)){
@@ -82,7 +106,7 @@ for(index in 1:nrow(euroCmat)){
 euroCmat[upper.tri(euroCmat)] <- NA
 
 # Group D
-euroD <- extract.clade(euOnlyTree, node = 316)
+euroD <- extract.clade(euOnlyTree, node = 402)
 euroDmat <- cophenetic(euroD)
 
 for(index in 1:nrow(euroDmat)){
@@ -93,7 +117,7 @@ for(index in 1:nrow(euroDmat)){
 euroDmat[upper.tri(euroDmat)] <- NA
 
 # Group E
-euroE <- extract.clade(euOnlyTree, node = 278)
+euroE <- extract.clade(euOnlyTree, node = 386)
 euroEmat <- cophenetic(euroE)
 
 for(index in 1:nrow(euroEmat)){
@@ -103,8 +127,19 @@ for(index in 1:nrow(euroEmat)){
 
 euroEmat[upper.tri(euroEmat)] <- NA
 
+# Group F
+euroF <- extract.clade(euOnlyTree, node = 373)
+euroFmat <- cophenetic(euroF)
+
+for(index in 1:nrow(euroFmat)){
+  
+  euroFmat[index, index] <- NA
+}
+
+euroFmat[upper.tri(euroFmat)] <- NA
+
 # Group G
-euroG <- extract.clade(euOnlyTree, node = 240)
+euroG <- extract.clade(euOnlyTree, node = 351)
 euroGmat <- cophenetic(euroG)
 
 for(index in 1:nrow(euroGmat)){
@@ -115,7 +150,7 @@ for(index in 1:nrow(euroGmat)){
 euroGmat[upper.tri(euroGmat)] <- NA
 
 # Group H
-euroH <- extract.clade(euOnlyTree, node = 229)
+euroH <- extract.clade(euOnlyTree, node = 305)
 euroHmat <- cophenetic(euroH)
 
 for(index in 1:nrow(euroHmat)){
@@ -208,4 +243,43 @@ findSimilars <- function(mat, threshold, counties){
     }
   }
   return(vector)
+}
+
+# Function to find how many herds have different VNTR types present
+findHerdsWithMultiVNTR <- function(herds, VNTRs){
+  
+  herdstatus <- c()
+  
+  herdstocheck <- which(table(herds)>1)
+  
+  # Loop thru herds with more than 1 isolate
+  for(index in names(herdstocheck)){
+    
+    places <- which(herds == index)
+    
+    currentvntrs <- rep(NA, length(places))
+    
+    for(place in 1:length(places)){
+      
+      currentvntrs[place] <- VNTRs[places[place]]
+    }
+    
+    herdstatus <- append(herdstatus, length(unique(currentvntrs)))
+    
+  }
+  
+  return(herdstatus)
+}
+
+# Function to get names of counties from simple lbaels
+findSimpleCounties <- function(inputvec){
+  
+  result <- rep(NA, length(inputvec))
+  
+  for(index in 1:length(inputvec)){
+    
+    result[index] <- strsplit(inputvec[index], " ")[[1]][2]
+  }
+  
+  return(result)
 }

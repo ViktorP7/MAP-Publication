@@ -57,7 +57,7 @@ maxNSamples <- sampleMax(sampleNumbers)
 #### Plot map as .png ####
 
 # Save plot as .png file
-outputFile <- paste("IrishMap_14-04-20.png", sep="")
+outputFile <- paste("IrishMap_29-01-21.png", sep="")
 png(outputFile, height=4500, width=4500)
 
 par(bg=NA)
@@ -90,7 +90,7 @@ dev.off()
 #### Plot map as .pdf ####
 
 # Save plot as .pdf file
-outputFile <- paste("IrishMap_14-04-20.pdf", sep="")
+outputFile <- paste("IrishMap_29-01-21.pdf", sep="")
 pdf(outputFile, height=75, width=75)
 
 par(bg=NA)
@@ -120,7 +120,7 @@ polygonsSpatialData(polygonCoords, sampleNumbers, counties, shortCounties, herdN
 
 dev.off()
 
-#### Temporal Plot ####
+#### Temporal Plot (UNUSED) ####
 
 # Get the count matrix
 counterMatrix <- getYearCounts(herdNames, allDist)
@@ -143,7 +143,7 @@ mtext(text="HERD", side=4, line=0.5, cex = 2)
 dev.off()
 
 
-#### Movement panel plot ####
+#### Movement panel plot (UNUSED) ####
 
 # Store the tip ranges for the groups
 tipsA <- 110:115
@@ -209,7 +209,7 @@ wh1cols[7] <- "gold"
 wh1cols[6] <- "darkgreen"
 wh1cols[c(1:5)] <- "red"
 
-outputFile <- paste("WH1-0_06-05-20.pdf", sep="")
+outputFile <- paste("WH1_29-01-21.pdf", sep="")
 pdf(outputFile, height=85, width=75)
 
 # Set margins to nothing
@@ -251,6 +251,7 @@ text(x=55, y =1.5, cex = 6, "SNPs")
 dev.off()
 
 
+
 # Get CE6 indices
 cegroup = which(herdNames %in% "Clare _ 6")
 ceg1 = cegroup[1]
@@ -287,6 +288,11 @@ numberSamples <- function(isolates){
     # Split away the herd number
     countyName <- strsplit(isolates[index], split = " ")[[1]][1]
     herdSampled <- strsplit(isolates[index], split = " ")[[1]][3]
+    
+    # Skip if NA
+    if(is.na(countyName) == TRUE || countyName == "NA" || countyName == "n/a"){
+      next
+    }
     
     # Check if we have encountered the current county before
     if(is.null(countySamples[[countyName]]) == TRUE){
@@ -389,12 +395,12 @@ polygonsSpatialData <- function(polygonCoords, sampleNumbers, counties, shortCou
            border = "black", add = TRUE, col = alpha("blue", proportion))
       
       # Create a vector of herds in the current county
-      currentHerds <- unique(herdnames[grep(counties[index], herdNames)])
+      currentHerds <- unique(herdnames[grep(counties[index], herdnames)])
       
       # For each herd in the current county herds, count how many isolates and plot point
       for(herd in currentHerds){
         
-        pointSize <- length(grep(herd, herdnames))
+        pointSize <- length(which(herd == herdnames))
         
         points(spsample(polygonCoords[[counties[index]]], n=1, type = "random"),
                pch = 21, col = alpha("red", 0.9), bg = alpha("red", 0.65), cex = 5*pointSize)
@@ -742,44 +748,44 @@ makeExampleHerd <- function(g1, g2, g3, counties, polygonCoords, shortCounties, 
       
       # Plot the polygon of the current county
       plot(polygonCoords[[counties[index]]],
-           border = "black", add = TRUE, col = alpha("red", 0.5))
+           border = "black", add = TRUE, col = alpha("red", 0.5), lwd = 5)
       
       # Add county name
-      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 8)
       
     }else if(counties[index] %in% unique(currentcounties[p2]) == TRUE){
       
       # Plot the polygon of the current county
       plot(polygonCoords[[counties[index]]],
-           border = "black", add = TRUE, col = alpha("darkgreen", 0.5))
+           border = "black", add = TRUE, col = alpha("darkgreen", 0.5), lwd = 5)
       
       # Add county name
-      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 8)
       
     } else if(is.na(g3) == FALSE && counties[index] %in% unique(currentcounties[p3]) == TRUE){
       
       # Plot the polygon of the current county
       plot(polygonCoords[[counties[index]]],
-           border = "black", add = TRUE, col = alpha("gold", 0.5))
+           border = "black", add = TRUE, col = alpha("gold", 0.5), lwd = 5)
       
       # Add county name
-      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 8)
       
     } else {
       
       # Plot the polygon of the current county
       plot(polygonCoords[[counties[index]]],
-           border = "black", add = TRUE)      
+           border = "black", add = TRUE, lwd = 5)      
     }
     
     if(counties[index] %in% unique(currentcounties[g1]) == TRUE){
       
       # Plot the polygon of the current county
       plot(polygonCoords[[counties[index]]],
-           border = "black", add = TRUE, col = alpha("blue", 0.5))
+           border = "black", add = TRUE, col = alpha("blue", 0.5), lwd = 5)
       
       # Add county name
-      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 7)
+      pointLabel(coordinates(polygonCoords[[counties[index]]]), labels = shortCounties[index], cex = 8)
       
     }
   }

@@ -8,9 +8,10 @@ library(phytools)
 library(scales)
 
 # Set path variables
-pathNewIso <- "C:/Users/UCD/Documents/Lab/CVRL MAP/MAP-Metadata-Formatted-May19.csv"
+pathNewIso <- "C:/Users/UCD/Documents/Lab/CVRL MAP/MetaOct2020Format.csv"
 pathBryantIso <- "C:/Users/UCD/Documents/Papers/Bryant 2016 Table S1.csv"
-pathTree <- "C:/Users/UCD/Desktop/UbuntuSharedFolder/Winter2018MAPSequencing/MAP-FASTQs/vcfFiles/Bryantandus/RAxML_bipartitions.RaxML-R_30-01-20"
+pathTree <- "C:/Users/UCD/Desktop/UbuntuSharedFolder/Winter2018MAPSequencing/MAP-FASTQs/vcfFiles/Bryantandus/RAxML_bipartitions.RaxML-R_04-03-21"
+pathNI <- "C:/Users/UCD/Documents/Lab/CVRL MAP/NIMetaOct2020.csv"
 
 # Read in table of bryant isolates
 isoBryantTable <- read.table(pathBryantIso,
@@ -21,6 +22,13 @@ isoBryantTable <- read.table(pathBryantIso,
 
 # Read in table of CVRL isolates
 isoCVRLTable <- read.table(pathNewIso,
+                           header = TRUE,
+                           sep = ",",
+                           stringsAsFactors=FALSE, 
+                           check.names=FALSE)
+
+# Read in table of NI isolates
+isoNITable <- read.table(pathNI,
                            header = TRUE,
                            sep = ",",
                            stringsAsFactors=FALSE, 
@@ -40,55 +48,43 @@ shortCounties <- c("AnNI", "ArNI", "CW", "CN", "CE", "C", "DL", "DoNI", "D", "FN
 # Read in tree
 TheTree <- read.tree(pathTree)
 
+# Re-root
+reRoot <- root(TheTree, node = 297)
+#rotatedTree <- rotateNodes(reRoot, c(409))
+
 # Get the Bryant names
-realNames <- getBryantLabels(isoBryantTable, TheTree)
+realNames <- getBryantLabels(isoBryantTable, reRoot)
 
 # Update the names in the tree
-TheTree$tip.label <- realNames
+reRoot$tip.label <- realNames
 
 # Get metadata for CVRL isolates
-realNames <- getCVRLLabels(isoCVRLTable, TheTree)
+realNames <- getCVRLLabels(isoCVRLTable, reRoot)
 
 # Update the names in the tree
-TheTree$tip.label <- realNames
+reRoot$tip.label <- realNames
 
-# Root the tree at 505 - ancestor rooted in the Bryant paper
-rootree <- root(TheTree, node = 505)
+# Get metadata for NI isolates
+realNames <- getNILabels(isoNITable, reRoot)
 
-# Drop tips for far away ancestors 
-dropNumbers <- c(235,236)
-droppedTree <- drop.tip(rootree, dropNumbers)
-
-# Extract the clade that doesn't have all the distant sheep and cows
-extractedTree <- extract.clade(droppedTree, node = 418)
-
-# Get rid of non-EU isolates for international tree
-dropInternational <- toDropNonEUTips(extractedTree$tip.label)
-euOnlyTree <- drop.tip(extractedTree, dropInternational)
+# Update names
+reRoot$tip.label <- realNames
 
 # Get rid of the non-irish isolates
-dropper <- toDropInternationalTips(extractedTree$tip.label)
-irishOnlytree <- drop.tip(extractedTree, dropper)
+dropper <- toDropInternationalTips(reRoot$tip.label)
+irishOnlytree <- drop.tip(reRoot, dropper)
 
 # Get rid of non-relevant tips
-dropem <- c(20,21,33,34,49,50,75,76,100,101)
+dropem <- c(17,19,20,95,96,135,136,183,184)
 onlytree <- drop.tip(irishOnlytree, dropem)
 
 # Convert branch lengths to SNP values
-onlytree$edge.length <- onlytree$edge.length * 48524
-euOnlyTree$edge.length <- euOnlyTree$edge.length * 48524
-
-# Get the rounded values o the lengths
-roundedSNPs <- round(onlytree$edge.length)
-roundedEU <- round(euOnlyTree$edge.length)
-
-# Assign rounded SNPs
-onlytree$edge.length <- roundedSNPs
-euOnlyTree$edge.length <- roundedEU
+onlytree$edge.length <- round(onlytree$edge.length * 7843)
+reRoot$edge.length <- round(reRoot$edge.length * 7843)
 
 # Find the distances between all isolates
 allDist <- cophenetic(onlytree)
-euDist <- cophenetic(euOnlyTree)
+euDist <- cophenetic(reRoot)
 
 # Round the distances
 allDist <- round(allDist)
@@ -108,7 +104,6 @@ countyNames <- getNames(allDist, "CCounty")
 birthcountyNames <- getNames(allDist, "BCounty")
 sameness <- getNames(allDist, "Same")
 
-
 # Get VNTR names
 vntrNames <- getNames(allDist, "VNTR")
 
@@ -116,13 +111,10 @@ vntrNames <- getNames(allDist, "VNTR")
 vntrTips <- makeVNTRCols(vntrNames)
 
 # Make EU colours
-euCols <- makeRegionColours(euOnlyTree$tip.label)
+euCols <- makeRegionColours(reRoot$tip.label)
 
 # Simplify the labels
 simpleLabels <- deconstructLabels(onlytree$tip.label, counties, shortCounties)
-
-# Deal with stubborn label
-simpleLabels[115] <- "14-3960 DL 1 (UK)"
 
 # Assign simple labels
 onlytree$tip.label <- simpleLabels
@@ -130,62 +122,48 @@ onlytree$tip.label <- simpleLabels
 #### Tree plotting (.png) ####
 
 # Save plot as .png file (Ireland)
-outputFile <- paste("VNTR_Tree_29-04-20.png", sep="")
+outputFile <- paste("VNTR_Tree_29-01-21.png", sep="")
 png(outputFile, height=5000, width=4500)
 
-# Set margins to nothing
-currentMar <- par()$mar
-par(mar=c(0,0,0,0))
-par(bg=NA)
-
 # Plot VNTR tree
-plot.phylo(onlytree, edge.width = 15, font = 1, label.offset = 0.2, 
+plot.phylo(onlytree, edge.width = 11, font = 1, label.offset = 0.2, 
            tip.color = vntrTips,
-           align.tip.label = FALSE, type="phylogram", cex = 4.8)
+           align.tip.label = FALSE, type="phylogram", cex = 2.5, no.margin = TRUE)
+nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(337,308,299,284,273,264,246,212), frame = "n", cex=15, adj = c(1,1), col = "red")
+
 
 # Add the SNP scale
-add.scale.bar(x=0, y = -1, cex = 8, lwd = 15)
-text(x=30, y =-1, cex = 8, "SNPs")
+add.scale.bar(x=10, y = 12, cex = 8, lwd = 17)
+text(x=40, y =12, cex = 8, "SNPs")
 
 # Add a legend
-legend(x=7, y=122, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
+legend(x=9, y=210, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
        text.col = c("red", "deepskyblue3", "darkorange3", "black", "darkgreen"), 
-       bty = "n", cex = 8, y.intersp = 0.7, title = "INMV Types")
-
-# Add the group idents
-segments(x0=135, y0=c(123,117.5,72.5,67,52.5,36.5,29,9.5), y1=c(118.5,74,68,54,38,30,11,2), lwd = 5)
-text(x=137, y=c(120.5,95,70,61,46,33,20,6), c("A","B","C","D","E","F","G","H"), cex=8)
-
-# Reset the margins
-par(mar=currentMar)
+       bty = "n", cex = 10, y.intersp = 0.8, title = "INMV Types")
 
 dev.off()
 
-
 # Make EU plot
-outputFile <- paste("EU-Tree_14-04-20.png", sep="")
+outputFile <- paste("EU-Tree_29-01-21.png", sep="")
 png(outputFile, height=5000, width=4500)
-
-# Set margins to nothing
-currentMar <- par()$mar
-par(mar=c(0,0,0,0))
-par(bg=NA)
-
 
 # Plot EU tree
 plot.phylo(euOnlyTree, edge.width = 10, font = 1, label.offset = 0.2, 
            show.tip.label = FALSE,
-           align.tip.label = FALSE, type="phylogram", cex = 30)
+           align.tip.label = FALSE, type="phylogram", cex = 30, no.margin = TRUE)
+nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(505,456,418,402,386,373,351,305), frame = "n", cex=15, adj = c(1,0), col = "red")
+
+
 
 #Add shaped tip labels
 tiplabels(pch = 18, col = euCols,  cex = 10)
 
 # Add the SNP scale
 add.scale.bar(x=0, y=0, cex = 8, lwd = 15)
-text(x=31, y=0, cex = 8, "SNPs")
+text(x=65, y=0, cex = 8, "SNPs")
 
 # Add a legend
-legend(x=120, y=220, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
+legend(x=150, y=300, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
                                 "Italy", "Spain", "France", "Germany", "Netherlands",
                                 "Czech Rep.", "Greece", "Norway"), 
        text.col = c("darkgreen", "firebrick4", "lightpink2", "steelblue3", "deeppink",
@@ -195,78 +173,52 @@ legend(x=120, y=220, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
                "aquamarine2", "goldenrod3", "royalblue4", "black", "orangered",
                "mediumblue", "slateblue", "purple"),
        bty = "n", cex = 8.8, y.intersp = 0.8, title = "Country")
-
-# Add the group idents
-segments(x0=154, y0=c(213.5,202.5,142,111.5,93.5,57.5,48,18), y1=c(204.5,145,114,97.5,59,49.5,19.5,6.5), lwd = 5)
-text(x=156, y=c(209,170,129,104,75,53,34,12), c("A","B","C","D","E","F","G","H"), cex=8)
-
-# Reset the margins
-par(mar=currentMar)
 
 dev.off()
 
 
 #### Tree plotting (.pdf) ####
 
-# Note different settings to .png
-
 # Save plot as .pdf file (Ireland)
-outputFile <- paste("VNTR_Tree_29-04-20.pdf", sep="")
+outputFile <- paste("VNTR_Tree_04-03-21.pdf", sep="")
 pdf(outputFile, height=75, width=75)
 
-# Set margins to nothing
-currentMar <- par()$mar
-par(mar=c(0,0,0,0))
-par(bg=NA)
-
 # Plot VNTR tree
-plot.phylo(onlytree, edge.width = 15, font = 1, label.offset = 0.2, 
-           tip.color = vntrTips,
-           align.tip.label = FALSE, type="phylogram", cex = 4.8)
+plot.phylo(onlytree, edge.width = 11, font = 1, label.offset = 0.2, tip.color = vntrTips,
+           align.tip.label = FALSE, type="phylogram", cex = 2.5, no.margin = TRUE)
+nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(317,285,267,259,249,222,213,199), frame = "n", cex=15, adj = c(1,1), col = "red")
 
 # Add the SNP scale
-add.scale.bar(x=0, y = -1, cex = 8, lwd = 15)
-text(x=30, y =-1, cex = 8, "SNPs")
+add.scale.bar(x=10, y = 5, cex = 8, lwd = 15)
+text(x=40, y =5, cex = 8, "SNPs")
 
 # Add a legend
-legend(x=9, y=122, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
+legend(x=9, y=160, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
        text.col = c("red", "deepskyblue3", "darkorange3", "black", "darkgreen"), 
-       bty = "n", cex = 8, y.intersp = 0.7, title = "INMV Types")
-
-# Add the group idents
-segments(x0=130.5, y0=c(123,117.5,72.5,67,52.5,36.5,29,9.5), y1=c(118.5,74,68,54,38,30,11,2), lwd = 5)
-text(x=132.5, y=c(120.5,95,70,61,45,33,20,6), c("A","B","C","D","E","F","G","H"), cex=8)
-
-# Reset the margins
-par(mar=currentMar)
+       bty = "n", cex = 10, y.intersp = 0.8, title = "INMV Types", title.col = "black")
 
 dev.off()
 
-
 # Make EU plot pdf
-outputFile <- paste("EU-Tree_14-04-20.pdf", sep="")
+outputFile <- paste("EU-Tree_04-03-21.pdf", sep="")
 pdf(outputFile, height=75, width=75)
 
-# Set margins to nothing
-currentMar <- par()$mar
-par(mar=c(0,0,0,0))
-par(bg=NA)
-
-
 # Plot EU tree
-plot.phylo(euOnlyTree, edge.width = 12, font = 1, label.offset = 0.2, 
+plot.phylo(reRoot, edge.width = 10, font = 1, label.offset = 0.2, 
            show.tip.label = FALSE,
-           align.tip.label = FALSE, type="phylogram", cex = 30)
+           align.tip.label = FALSE, type="phylogram", cex = 30, no.margin = TRUE)
+nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(472,425,403,391,379,334,303,296), frame = "n", cex=15, adj = c(1,0), col = "red")
+
 
 #Add shaped tip labels
-tiplabels(pch = 18, col = euCols,  cex = 10)
+tiplabels(pch = 18, col = euCols,  cex = 9)
 
 # Add the SNP scale
-add.scale.bar(x=0, y=0, cex = 8, lwd = 15)
-text(x=31, y=0, cex = 8, "SNPs")
+add.scale.bar(x=100, y=0, cex = 10, lwd = 15)
+text(x=167, y=0, cex = 10, "SNPs")
 
 # Add a legend
-legend(x=120, y=220, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
+legend(x=150, y=280, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
                                 "Italy", "Spain", "France", "Germany", "Netherlands",
                                 "Czech Rep.", "Greece", "Norway"), 
        text.col = c("darkgreen", "firebrick4", "lightpink2", "steelblue3", "deeppink",
@@ -275,14 +227,7 @@ legend(x=120, y=220, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
        col = c("darkgreen", "firebrick4", "lightpink2", "steelblue3", "deeppink",
                "aquamarine2", "goldenrod3", "royalblue4", "black", "orangered",
                "mediumblue", "slateblue", "purple"),
-       bty = "n", cex = 8.8, y.intersp = 0.8, title = "Country")
-
-# Add the group idents
-segments(x0=153.5, y0=c(213.5,202.5,142,111.5,93.5,57.5,48,18), y1=c(204.5,145,114,97.5,59,49.5,19.5,6.5), lwd = 5)
-text(x=154.5, y=c(209,170,129,104,75,53,34,12), c("A","B","C","D","E","F","G","H"), cex=8)
-
-# Reset the margins
-par(mar=currentMar)
+       bty = "n", cex = 10, y.intersp = 0.8, title = "Country", title.col = "black")
 
 dev.off()
 #### Functions ####
@@ -350,10 +295,10 @@ getCVRLLabels <- function(isoTable, TheTree){
       # Check if the current accession is present in the big table
       if(isoTable[row,"AliquotFormat"] == nameVector[index]){
         
-        herd <- strsplit(isoTable[row,"Herd Ref"], split = " ")[[1]][2]
+        herd <- strsplit(isoTable[row,"Herd Identifier"], split = " ")[[1]][2]
         
-        newname <- paste(nameVector[index], "_", isoTable[row, "Herd Location"], "_", herd, "_",
-                         isoTable[row,"INMV Group"], "_", isoTable[row, "County of Birth"], "_", isoTable[row, "Herd of Birth"])
+        newname <- paste(nameVector[index], "_", isoTable[row, "County"], "_", herd, "_",
+                         isoTable[row,"INMV Group"], "_", isoTable[row, "Birth County"], "_", isoTable[row, "Number of moves to herd of sampling"])
         nameVector[index] <- newname
       }else{
         
@@ -366,6 +311,41 @@ getCVRLLabels <- function(isoTable, TheTree){
   nameVector <- gsub(" ", "", nameVector, fixed = TRUE)
   
   return(nameVector)
+}
+
+# Function to get labels for NI isolates
+getNILabels <- function(isoTable, TheTree){
+  
+  # Create a vector to match the tip labels vector in the tree
+  nameVector <- TheTree$tip.label
+  
+  # Loop thru the table
+  for(row in 1:nrow(isoTable)){
+    
+    # Loop thru the name vector
+    for(index in 1:length(nameVector)){
+      
+      # Check if the current accession is present in the big table
+      if(isoTable[row,"SeqRef"] == nameVector[index]){
+        
+        county <- strsplit(isoTable[row,"Herd Ref"], split = " ")[[1]][1]
+        herd <- strsplit(isoTable[row,"Herd Ref"], split = " ")[[1]][2]
+        
+        newname <- paste(isoTable[row,"AliquotFormat"], "_", county, "_", herd, "_",
+                         isoTable[row,"INMV"], "_", isoTable[row, "Birth County"], "_", isoTable[row, "Herd of Birth"])
+        nameVector[index] <- newname
+      }else{
+        
+        next
+      }
+      
+    }
+    
+  }
+  nameVector <- gsub(" ", "", nameVector, fixed = TRUE)
+  
+  return(nameVector)
+  
 }
 
 # Function to create vector with international tips to drop
@@ -415,45 +395,6 @@ toDropInternationalTips <- function(tiplabel){
       
       dropVector <- append(dropVector, index)
     } else if(grepl("NewZealand", tiplabel[index]) == TRUE){
-      
-      dropVector <- append(dropVector, index)
-    } else if(grepl("USA", tiplabel[index]) == TRUE){
-      
-      dropVector <- append(dropVector, index)
-    } else if(grepl("Canada", tiplabel[index]) == TRUE){
-      
-      dropVector <- append(dropVector, index)
-    } else if(grepl("Venezuela", tiplabel[index]) == TRUE){
-      
-      dropVector <- append(dropVector, index)
-    } else if(grepl("India", tiplabel[index]) == TRUE){
-      
-      dropVector <- append(dropVector, index)
-    } else if(grepl("Argentina", tiplabel[index]) == TRUE){
-      
-      dropVector <- append(dropVector, index)
-    } else if(grepl("ERR0", tiplabel[index]) == TRUE){
-      
-      dropVector <- append(dropVector, index)
-    } else if(grepl("SRR", tiplabel[index]) == TRUE){
-      
-      dropVector <- append(dropVector, index)
-    }
-  }
-  return(dropVector)
-}
-
-# Function to create vector with non-EU tips to drop
-toDropNonEUTips <- function(tiplabel){
-  
-  # Create vector to store index values of tips to be dropped
-  dropVector <- c()
-  
-  # Loop thru tip labels and drop as required
-  for(index in 1:length(tiplabel)){
-    
-    # Check if part of a word is in the name and assign a colour
-    if(grepl("NewZealand", tiplabel[index]) == TRUE){
       
       dropVector <- append(dropVector, index)
     } else if(grepl("USA", tiplabel[index]) == TRUE){
@@ -560,7 +501,7 @@ makeVNTRCols <- function(realNames){
   # Loop thru each name
   for(index in 1:length(colourVec)){
     
-    if(is.na(colourVec[index]) == TRUE){
+    if(is.na(colourVec[index]) == TRUE || colourVec[index] == "n/a"){
       
       colourVec[index] <- "grey30"
     } else if(colourVec[index] == "1"){
@@ -665,18 +606,18 @@ deconstructLabels <- function(tiplabel, counties, shortCounties){
     same <- strsplit(tiplabel[index], split = "_")[[1]][6]
     
     # Check if it's the same county
-    if(same == "Same"){
-      
-      newtips[index] <- herd
-    } else if(same == "n/a" || is.na(same) == TRUE){
+    if(same == "n/a" || is.na(same) == TRUE || same == "Unknown" || same == "Not available"|| same == "Notavailable"){
       
       yoke <- paste(herd,"*", collapse = NULL)
     
       newtips[index] <- yoke
     
-    } else {
+    } else if(same == "None" || same == "Same"){
       
-      if(birth == "U.K. Import"){
+      newtips[index] <- herd 
+    }else {
+      
+      if(birth == "U.K. Import" || birth == "U.K.Import"){
         shortB <- "UK"
       } else{
       

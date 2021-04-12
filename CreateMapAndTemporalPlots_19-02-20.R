@@ -90,7 +90,7 @@ dev.off()
 #### Plot map as .pdf ####
 
 # Save plot as .pdf file
-outputFile <- paste("IrishMap_29-01-21.pdf", sep="")
+outputFile <- paste("IrishMap_08-04-21.pdf", sep="")
 pdf(outputFile, height=75, width=75)
 
 par(bg=NA)
@@ -206,10 +206,10 @@ wh1tree <- makeExampleTree(whg1,whg2,whg3,allDist,onlytree)
 # Assign colours 
 wh1cols <- c(1:length(wh1tree$tip.label)) 
 wh1cols[7] <- "gold"
-wh1cols[6] <- "darkgreen"
+wh1cols[6] <- "gold"
 wh1cols[c(1:5)] <- "red"
 
-outputFile <- paste("WH1_29-01-21.pdf", sep="")
+outputFile <- paste("WH1_09-04-21.pdf", sep="")
 pdf(outputFile, height=85, width=75)
 
 # Set margins to nothing
@@ -229,8 +229,8 @@ makeExampleHerd(whg1,whg2,whg3,counties,polygonCoords,shortCounties,allDist,coun
 
 
 # Add a legend
-legend("bottomright", legend = c("A", "B", "G", "A, B, G"), 
-       text.col = c("gold", "darkgreen", "red", "blue"), 
+legend("bottomright", legend = c("A", "B", "A, B"), 
+       text.col = c("gold", "red", "blue"), 
        bty = "n", cex = 12, title = "Westmeath 1 Strains", title.col = "black")
 
 
@@ -249,29 +249,6 @@ text(x=55, y =1.5, cex = 6, "SNPs")
 
 
 dev.off()
-
-
-
-# Get CE6 indices
-cegroup = which(herdNames %in% "Clare _ 6")
-ceg1 = cegroup[1]
-ceg2 = cegroup[2:6]
-ceg3 = NA
-
-
-# Get LH1 indices
-lhgroup = which(herdNames %in% "Louth _ 1")
-lhg1 = lhgroup[2]
-lhg2 = lhgroup[1]
-lhg3 = lhgroup[3:5]
-
-
-# Get C2 indices
-cgroup = which(herdNames %in% "Cork _ 2")
-cg1 = cgroup[2]
-cg2 = cgroup[1]
-cg3 = NA
-
 
 #### Functions ####
 
@@ -800,11 +777,11 @@ makeExampleHerd <- function(g1, g2, g3, counties, polygonCoords, shortCounties, 
   }
   
   # Add movement arrows for each group
-  plotGroupArrows(g2, birthcountyNames, currentcounties, polygonCoords, allDist, "darkgreen")
+  plotGroupArrows(g2, birthcountyNames, currentcounties, polygonCoords, allDist, "gold")
   
   if(is.null(p2) == FALSE){
     
-    plotGroupArrows(p2, birthcountyNames, currentcounties, polygonCoords, allDist, "darkgreen")
+    plotGroupArrows(p2, birthcountyNames, currentcounties, polygonCoords, allDist, "gold")
     
   }
   

@@ -37,14 +37,14 @@ min(allDist[which(vntrNames == 3)[1],], na.rm=T)
 min(allDist[which(vntrNames == 3)[2],], na.rm=T)
 
 # Look at Group A on Irish tree
-irishA <- extract.clade(onlytree, node = 337)
+irishA <- extract.clade(onlytree, node = 317)
 length(irishA$tip.label)
 distA <- cophenetic.phylo(irishA)
 countiesA <- findSimpleCounties(rownames(distA))
 length(table(countiesA))
 
 # Look at Group H on Irish tree
-irishH <- extract.clade(onlytree, node = 212)
+irishH <- extract.clade(onlytree, node = 285)
 length(irishH$tip.label)
 distH <- cophenetic.phylo(irishH)
 countiesH <- findSimpleCounties(rownames(distH))
@@ -64,16 +64,15 @@ median(allDist[grep("Clare", herdNames), grep("Clare", herdNames)], na.rm=T)
 range(allDist[grep("Westmeath _ 1", herdNames)[4],grep("Westmeath _ 1", herdNames)],na.rm=T)
 range(allDist[grep("Westmeath _ 1", herdNames)[5],grep("Westmeath _ 1", herdNames)],na.rm=T)
 
-# Clare outliers distance to group A
-allDist[61,111]
-
-# Max dist within group B subgroup of 21
-max(allDist[165:196, 165:196], na.rm = T)
+# Max dist within group A subgroup of 21
+max(allDist[115:146, 115:146], na.rm = T)
+table(herdNames[115:146])
+table(countyNames[115:146])
 
 #### European groups ####
 
 # Group A europe
-euroA <- extract.clade(euOnlyTree, node = 505)
+euroA <- extract.clade(reRoot, node = 472)
 euroAmat <- cophenetic(euroA)
 
 for(index in 1:nrow(euroAmat)){
@@ -84,7 +83,7 @@ for(index in 1:nrow(euroAmat)){
 euroAmat[upper.tri(euroAmat)] <- NA
 
 # Group B europe
-euroB <- extract.clade(euOnlyTree, node = 456)
+euroB <- extract.clade(reRoot, node = 425)
 euroBmat <- cophenetic(euroB)
 
 for(index in 1:nrow(euroBmat)){
@@ -95,7 +94,7 @@ for(index in 1:nrow(euroBmat)){
 euroBmat[upper.tri(euroBmat)] <- NA
 
 # Group C
-euroC <- extract.clade(euOnlyTree, node = 418)
+euroC <- extract.clade(reRoot, node = 403)
 euroCmat <- cophenetic(euroC)
 
 for(index in 1:nrow(euroCmat)){
@@ -106,7 +105,7 @@ for(index in 1:nrow(euroCmat)){
 euroCmat[upper.tri(euroCmat)] <- NA
 
 # Group D
-euroD <- extract.clade(euOnlyTree, node = 402)
+euroD <- extract.clade(reRoot, node = 391)
 euroDmat <- cophenetic(euroD)
 
 for(index in 1:nrow(euroDmat)){
@@ -117,7 +116,7 @@ for(index in 1:nrow(euroDmat)){
 euroDmat[upper.tri(euroDmat)] <- NA
 
 # Group E
-euroE <- extract.clade(euOnlyTree, node = 386)
+euroE <- extract.clade(reRoot, node = 379)
 euroEmat <- cophenetic(euroE)
 
 for(index in 1:nrow(euroEmat)){
@@ -128,7 +127,7 @@ for(index in 1:nrow(euroEmat)){
 euroEmat[upper.tri(euroEmat)] <- NA
 
 # Group F
-euroF <- extract.clade(euOnlyTree, node = 373)
+euroF <- extract.clade(reRoot, node = 334)
 euroFmat <- cophenetic(euroF)
 
 for(index in 1:nrow(euroFmat)){
@@ -139,7 +138,7 @@ for(index in 1:nrow(euroFmat)){
 euroFmat[upper.tri(euroFmat)] <- NA
 
 # Group G
-euroG <- extract.clade(euOnlyTree, node = 351)
+euroG <- extract.clade(reRoot, node = 303)
 euroGmat <- cophenetic(euroG)
 
 for(index in 1:nrow(euroGmat)){
@@ -150,7 +149,7 @@ for(index in 1:nrow(euroGmat)){
 euroGmat[upper.tri(euroGmat)] <- NA
 
 # Group H
-euroH <- extract.clade(euOnlyTree, node = 305)
+euroH <- extract.clade(reRoot, node = 296)
 euroHmat <- cophenetic(euroH)
 
 for(index in 1:nrow(euroHmat)){

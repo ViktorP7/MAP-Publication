@@ -200,7 +200,7 @@ legend(x=9, y=160, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 
 dev.off()
 
 # Make EU plot pdf
-outputFile <- paste("EU-Tree_04-03-21.pdf", sep="")
+outputFile <- paste("EU-Tree_29-04-21.pdf", sep="")
 pdf(outputFile, height=75, width=75)
 
 # Plot EU tree
@@ -218,16 +218,10 @@ add.scale.bar(x=100, y=0, cex = 10, lwd = 15)
 text(x=167, y=0, cex = 10, "SNPs")
 
 # Add a legend
-legend(x=150, y=280, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
-                                "Italy", "Spain", "France", "Germany", "Netherlands",
-                                "Czech Rep.", "Greece", "Norway"), 
-       text.col = c("darkgreen", "firebrick4", "lightpink2", "steelblue3", "deeppink",
-                    "aquamarine2", "goldenrod3", "royalblue4", "black", "orangered",
-                    "mediumblue", "slateblue", "purple"), pch = 18,
-       col = c("darkgreen", "firebrick4", "lightpink2", "steelblue3", "deeppink",
-               "aquamarine2", "goldenrod3", "royalblue4", "black", "orangered",
-               "mediumblue", "slateblue", "purple"),
-       bty = "n", cex = 10, y.intersp = 0.8, title = "Country", title.col = "black")
+legend(x=130, y=170, legend = c("Ireland", "UK", "Continental Europe"), 
+       text.col = c("darkgreen", "firebrick4", "slateblue"), pch = 18,
+       col = c("darkgreen", "firebrick4", "slateblue"),
+       bty = "n", cex = 12, y.intersp = 0.8, title = "Region", title.col = "black")
 
 dev.off()
 #### Functions ####
@@ -538,37 +532,37 @@ makeRegionColours <- function(realNames){
       colourVec[index] <- "firebrick4"
     } else if(grepl("Italy", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "aquamarine2" 
+      colourVec[index] <- "slateblue" 
     } else if(grepl("Spain", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "goldenrod3"
+      colourVec[index] <- "slateblue"
     } else if(grepl("France", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "royalblue4"
+      colourVec[index] <- "slateblue"
     } else if(grepl("Scotland", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "steelblue3"
+      colourVec[index] <- "firebrick4"
     } else if(grepl("England", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "lightpink2"
+      colourVec[index] <- "firebrick4"
     } else if(grepl("Wales", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "deeppink"
+      colourVec[index] <- "firebrick4"
     } else if(grepl("Germany", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "black"
+      colourVec[index] <- "slateblue"
     } else if(grepl("Netherlands", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "orangered"
+      colourVec[index] <- "slateblue"
     } else if(grepl("Czech", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "mediumblue"
+      colourVec[index] <- "slateblue"
     } else if(grepl("Greece", colourVec[index]) == TRUE){
       
       colourVec[index] <- "slateblue"
     } else if(grepl("Norway", colourVec[index]) == TRUE){
       
-      colourVec[index] <- "purple"
+      colourVec[index] <- "slateblue"
     } else {
       
       colourVec[index] <- "darkgreen"

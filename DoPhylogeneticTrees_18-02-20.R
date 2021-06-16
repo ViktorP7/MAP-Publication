@@ -8,7 +8,7 @@ library(phytools)
 library(scales)
 
 # Set path variables
-pathNewIso <- "C:/Users/UCD/Documents/Lab/CVRL MAP/MetaOct2020Format.csv"
+pathNewIso <- "C:/Users/UCD/Documents/Lab/CVRL MAP/MetaMay2021Format.csv"
 pathBryantIso <- "C:/Users/UCD/Documents/Papers/Bryant 2016 Table S1.csv"
 pathTree <- "C:/Users/UCD/Desktop/UbuntuSharedFolder/Winter2018MAPSequencing/MAP-FASTQs/vcfFiles/Bryantandus/RAxML_bipartitions.RaxML-R_04-03-21"
 pathNI <- "C:/Users/UCD/Documents/Lab/CVRL MAP/NIMetaOct2020.csv"
@@ -114,79 +114,23 @@ vntrTips <- makeVNTRCols(vntrNames)
 euCols <- makeRegionColours(reRoot$tip.label)
 
 # Simplify the labels
-simpleLabels <- deconstructLabels(onlytree$tip.label, counties, shortCounties)
+simpleMat <- deconstructLabels(onlytree$tip.label, counties, shortCounties)
 
 # Assign simple labels
-onlytree$tip.label <- simpleLabels
+onlytree$tip.label <- simpleMat[1,]
 
 #### Tree plotting (.png) ####
 
 # Save plot as .png file (Ireland)
-outputFile <- paste("VNTR_Tree_29-01-21.png", sep="")
-png(outputFile, height=5000, width=4500)
+outputFile <- paste("VNTR_Tree_10-05-21.png", sep="")
+png(outputFile, height=10000, width=6000)
 
 # Plot VNTR tree
 plot.phylo(onlytree, edge.width = 11, font = 1, label.offset = 0.2, 
            tip.color = vntrTips,
-           align.tip.label = FALSE, type="phylogram", cex = 2.5, no.margin = TRUE)
-nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(337,308,299,284,273,264,246,212), frame = "n", cex=15, adj = c(1,1), col = "red")
-
-
-# Add the SNP scale
-add.scale.bar(x=10, y = 12, cex = 8, lwd = 17)
-text(x=40, y =12, cex = 8, "SNPs")
-
-# Add a legend
-legend(x=9, y=210, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
-       text.col = c("red", "deepskyblue3", "darkorange3", "black", "darkgreen"), 
-       bty = "n", cex = 10, y.intersp = 0.8, title = "INMV Types")
-
-dev.off()
-
-# Make EU plot
-outputFile <- paste("EU-Tree_29-01-21.png", sep="")
-png(outputFile, height=5000, width=4500)
-
-# Plot EU tree
-plot.phylo(euOnlyTree, edge.width = 10, font = 1, label.offset = 0.2, 
-           show.tip.label = FALSE,
-           align.tip.label = FALSE, type="phylogram", cex = 30, no.margin = TRUE)
-nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(505,456,418,402,386,373,351,305), frame = "n", cex=15, adj = c(1,0), col = "red")
-
-
-
-#Add shaped tip labels
-tiplabels(pch = 18, col = euCols,  cex = 10)
-
-# Add the SNP scale
-add.scale.bar(x=0, y=0, cex = 8, lwd = 15)
-text(x=65, y=0, cex = 8, "SNPs")
-
-# Add a legend
-legend(x=150, y=300, legend = c("Ireland", "UK", "England", "Scotland", "Wales",
-                                "Italy", "Spain", "France", "Germany", "Netherlands",
-                                "Czech Rep.", "Greece", "Norway"), 
-       text.col = c("darkgreen", "firebrick4", "lightpink2", "steelblue3", "deeppink",
-                    "aquamarine2", "goldenrod3", "royalblue4", "black", "orangered",
-                    "mediumblue", "slateblue", "purple"), pch = 18,
-       col = c("darkgreen", "firebrick4", "lightpink2", "steelblue3", "deeppink",
-               "aquamarine2", "goldenrod3", "royalblue4", "black", "orangered",
-               "mediumblue", "slateblue", "purple"),
-       bty = "n", cex = 8.8, y.intersp = 0.8, title = "Country")
-
-dev.off()
-
-
-#### Tree plotting (.pdf) ####
-
-# Save plot as .pdf file (Ireland)
-outputFile <- paste("VNTR_Tree_04-03-21.pdf", sep="")
-pdf(outputFile, height=75, width=75)
-
-# Plot VNTR tree
-plot.phylo(onlytree, edge.width = 11, font = 1, label.offset = 0.2, tip.color = vntrTips,
-           align.tip.label = FALSE, type="phylogram", cex = 2.5, no.margin = TRUE)
+           align.tip.label = FALSE, type="phylogram", cex = 5, no.margin = TRUE)
 nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(317,285,267,259,249,222,213,199), frame = "n", cex=15, adj = c(1,1), col = "red")
+
 
 # Add the SNP scale
 add.scale.bar(x=10, y = 5, cex = 8, lwd = 15)
@@ -199,9 +143,9 @@ legend(x=9, y=160, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 
 
 dev.off()
 
-# Make EU plot pdf
-outputFile <- paste("EU-Tree_29-04-21.pdf", sep="")
-pdf(outputFile, height=75, width=75)
+# Make EU plot
+outputFile <- paste("EU-Tree_10-05-21.png", sep="")
+png(outputFile, height=7000, width=5500)
 
 # Plot EU tree
 plot.phylo(reRoot, edge.width = 10, font = 1, label.offset = 0.2, 
@@ -218,10 +162,66 @@ add.scale.bar(x=100, y=0, cex = 10, lwd = 15)
 text(x=167, y=0, cex = 10, "SNPs")
 
 # Add a legend
-legend(x=130, y=170, legend = c("Ireland", "UK", "Continental Europe"), 
+legend(x=130, y=170, legend = c("Ireland", "Great Britain", "Continental Europe"), 
        text.col = c("darkgreen", "firebrick4", "slateblue"), pch = 18,
        col = c("darkgreen", "firebrick4", "slateblue"),
        bty = "n", cex = 12, y.intersp = 0.8, title = "Region", title.col = "black")
+
+
+dev.off()
+
+
+#### Tree plotting (.pdf) ####
+
+# Save plot as .pdf file (Ireland)
+outputFile <- paste("VNTR_Tree_12-05-21.pdf", sep="")
+pdf(outputFile, height=100, width=100)
+
+# Plot VNTR tree
+plot.phylo(onlytree, edge.width = 17, font = 2, label.offset = 2, tip.color = vntrTips,
+           align.tip.label = TRUE, type="fan", cex = 8.5, no.margin = TRUE,x.lim = c(-175,175), y.lim = c(-175,175))
+nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(317,285,267,259,249,222,213,199), frame = "c", cex=10, col = "darkred")
+
+tiplabels(pch = 18, frame = "n", col = simpleMat[2,], cex=15)
+# Add the SNP scale
+add.scale.bar(x=-175, y = -175, cex = 10, lwd = 17)
+text(x=-100, y =-175, cex = 10, "SNPs")
+
+
+# Add a legend
+legend(x=-175, y=175, legend = c("(42332228) - 1", "(32332228) - 2", "(32332218) - 3", "(22332228) - 13", "(41332228) - 116"), 
+       text.col = c("red", "deepskyblue3", "darkorange3", "black", "darkgreen"), 
+       bty = "n", cex = 10, y.intersp = 0.8, title = "INMV Types", title.col = "black")
+legend(x=135, y=175, legend = c("2013", "2014", "2015", "2016", "2017", "2019"), 
+       text.col = c("firebrick3", "goldenrod3", "gray40", "steelblue3", "palegreen3", "orchid"),
+       pch = c(23,23,23,23,23,23), pt.bg = c("firebrick3", "goldenrod3", "gray40", "steelblue3", "palegreen3", "orchid"), pt.cex = 15,
+       bty = "n", cex = 10, y.intersp = 0.8, title = "Isolation Year", title.col = "black")
+
+dev.off()
+
+# Make EU plot pdf
+outputFile <- paste("EU-Tree_26-05-21.pdf", sep="")
+pdf(outputFile, height=90, width=90)
+
+# Plot EU tree
+plot.phylo(reRoot, edge.width = 20, font = 2, label.offset = 2, 
+           show.tip.label = FALSE,
+           align.tip.label = FALSE, type="fan", cex = 30, no.margin = TRUE,x.lim = c(-175,175), y.lim = c(-175,175))
+nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(472,425,403,391,379,334,303,296), frame = "c", cex=13, col = "darkred")
+
+
+#Add shaped tip labels
+tiplabels(pch = 18, col = euCols,  cex = 16)
+
+# Add the SNP scale
+add.scale.bar(x=-175, y=-175, cex = 15, lwd = 20)
+text(x=-95, y=-175, cex = 15, "SNPs")
+
+# Add a legend
+legend(x=-175, y=175, legend = c("Ireland", "Great Britain", "Continental Europe"), 
+       text.col = c("darkgreen", "firebrick4", "slateblue"), pch = 18,
+       col = c("darkgreen", "firebrick4", "slateblue"),
+       bty = "n", cex = 15, y.intersp = 0.8, title = "Region", title.col = "black")
 
 dev.off()
 #### Functions ####
@@ -575,8 +575,9 @@ makeRegionColours <- function(realNames){
 # Function to simplify the labels
 deconstructLabels <- function(tiplabel, counties, shortCounties){
   
-  # Copy vector
-  newtips <- rep(NA, length(tiplabel))
+  # Create output frame
+  outmat <- matrix(nrow = 2, ncol = length(tiplabel))
+  
   
   # Loop thru the tips and cut them down
   for(index in 1:length(tiplabel)){
@@ -584,13 +585,14 @@ deconstructLabels <- function(tiplabel, counties, shortCounties){
     # Split up the different parts of the tip label
     one <- strsplit(tiplabel[index], split = "_")[[1]][2]
     two <- strsplit(tiplabel[index], split = "_")[[1]][3]
-    date <- strsplit(tiplabel[index], split = "_")[[1]][1]
+    notdate <- strsplit(tiplabel[index], split = "_")[[1]][1]
+    date <- strsplit(notdate, split = "-")[[1]][1]
     
     # Find which index in counties the tip county is and store shortened version
     short <- shortCounties[which(one == counties)]
     
     # Store herd
-    herd <- paste(date,short,two)
+    herd <- paste(one,two)
     
     # Store birth location
     birth <- strsplit(tiplabel[index], split = "_")[[1]][5]
@@ -604,11 +606,11 @@ deconstructLabels <- function(tiplabel, counties, shortCounties){
       
       yoke <- paste(herd,"*", collapse = NULL)
     
-      newtips[index] <- yoke
+      outmat[1,index] <- yoke
     
     } else if(same == "None" || same == "Same"){
       
-      newtips[index] <- herd 
+      outmat[1,index] <- herd 
     }else {
       
       if(birth == "U.K. Import" || birth == "U.K.Import"){
@@ -621,11 +623,32 @@ deconstructLabels <- function(tiplabel, counties, shortCounties){
       
       thing <- paste(herd, birthstring)
       
-      newtips[index] <- thing
+      outmat[1,index] <- thing
     }
     
+    if(date == "13"){
+      
+      co = "firebrick3"
+    } else if(date == "14"){
+      
+      co = "goldenrod3"
+    } else if(date == "15"){
+      
+      co = "gray40"
+    } else if(date == "16"){
+      
+      co = "steelblue3"
+    } else if(date == "17"){
+      
+      co = "palegreen3"
+    } else if (date == "19"){
+      
+      co = "orchid"
+    }
+      
+    outmat[2,index] <- co
   }
   
-  return(newtips)
+  return(outmat)
 }
 

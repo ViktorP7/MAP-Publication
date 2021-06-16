@@ -57,8 +57,8 @@ maxNSamples <- sampleMax(sampleNumbers)
 #### Plot map as .png ####
 
 # Save plot as .png file
-outputFile <- paste("IrishMap_29-01-21.png", sep="")
-png(outputFile, height=4500, width=4500)
+outputFile <- paste("IrishMap_10-05-21.png", sep="")
+png(outputFile, height=5500, width=4500)
 
 par(bg=NA)
 
@@ -91,7 +91,7 @@ dev.off()
 
 # Save plot as .pdf file
 outputFile <- paste("IrishMap_08-04-21.pdf", sep="")
-pdf(outputFile, height=75, width=75)
+pdf(outputFile, height=85, width=75)
 
 par(bg=NA)
 

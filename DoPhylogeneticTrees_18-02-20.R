@@ -200,8 +200,8 @@ legend(x=135, y=175, legend = c("2013", "2014", "2015", "2016", "2017", "2019"),
 dev.off()
 
 # Make EU plot pdf
-outputFile <- paste("EU-Tree_26-05-21.pdf", sep="")
-pdf(outputFile, height=90, width=90)
+outputFile <- paste("EU-Tree_09-07-21.pdf", sep="")
+pdf(outputFile, height=120, width=120)
 
 # Plot EU tree
 plot.phylo(reRoot, edge.width = 20, font = 2, label.offset = 2, 
@@ -214,14 +214,14 @@ nodelabels(text= c("A","B","C","D","E","F","G","H"), node = c(472,425,403,391,37
 tiplabels(pch = 18, col = euCols,  cex = 16)
 
 # Add the SNP scale
-add.scale.bar(x=-175, y=-175, cex = 15, lwd = 20)
+add.scale.bar(x=-175, y=-175, cex = 15, lwd = 25)
 text(x=-95, y=-175, cex = 15, "SNPs")
 
 # Add a legend
 legend(x=-175, y=175, legend = c("Ireland", "Great Britain", "Continental Europe"), 
        text.col = c("darkgreen", "firebrick4", "slateblue"), pch = 18,
        col = c("darkgreen", "firebrick4", "slateblue"),
-       bty = "n", cex = 15, y.intersp = 0.8, title = "Region", title.col = "black")
+       bty = "n", cex = 16, y.intersp = 0.8, title = "Region", title.col = "black")
 
 dev.off()
 #### Functions ####

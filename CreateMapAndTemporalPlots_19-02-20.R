@@ -126,15 +126,15 @@ dev.off()
 counterMatrix <- getYearCounts(herdNames, allDist)
 
 # Save plot as .pdf file
-outputFile <- paste("TemporalIsolates_14-04-20.pdf", sep="")
-pdf(outputFile, height=20, width=15)
+outputFile <- paste("TemporalIsolates_06-09-21.png", sep="")
+png(outputFile, height=5000, width=2000)
 
 par(cex.main = 2.5, cex.lab = 1.5)
 # Plot the figure
 heatmap.2(counterMatrix, dendrogram = "none", trace = "none", Rowv = FALSE,
           Colv = FALSE, col = colorRampPalette(c("white", "blue")), denscol = "red",
           xlab = "", ylab = "", main = "Temporal Span of Isolates Across Herds", 
-          offsetRow = -83, cexRow = 1.7, density.info = "none", keysize = 0.5, margins = c(7,7),
+          offsetRow = -153, cexRow = 1.7, density.info = "none", keysize = 0.5, margins = c(7,7),
           key.xlab = "Number of Isolates", cexCol = 1.7, key.title = "Key")
 mtext(text="YEAR", side=1, line=3.5, cex = 2)
 mtext(text="HERD", side=4, line=0.5, cex = 2)
@@ -209,7 +209,7 @@ wh1cols[7] <- "gold"
 wh1cols[6] <- "gold"
 wh1cols[c(1:5)] <- "red"
 
-outputFile <- paste("WH1_09-04-21.pdf", sep="")
+outputFile <- paste("WH1_06-12-21.pdf", sep="")
 pdf(outputFile, height=85, width=75)
 
 # Set margins to nothing
@@ -407,8 +407,8 @@ getYearCounts <- function(herdnames, matrix){
   herdYears <- table(comboVector)
   
   # Make a matrix of length herds and width years
-  countMatrix <- matrix(data = 0, nrow = length(unique(herdnames)), ncol = 5, 
-                        dimnames = list(sort(unique(herdnames)), c("2012","2013","2014","2016","2017")))
+  countMatrix <- matrix(data = 0, nrow = length(unique(herdnames)), ncol = 6, 
+                        dimnames = list(sort(unique(herdnames)), c("2013","2014","2015","2016","2017","2019")))
   
   # Get the name of the table
   herdos <- names(herdYears)
@@ -680,30 +680,26 @@ proxFinder <- function(sometips, allDist){
 }
 
 # Function to plot labelled arrows for groups
-plotGroupArrows <- function(group, birthcountyNames, currentcounties, polygonCoords, allDist, colour){
+plotGroupArrows <- function(group, birthcountyNames, currentcounties, polygonCoords, allDist, colour, atog){
   
   # Add movement arrows for each group
-  for(loc in group){
+  for(loc in 1:length(group)){
     
     roll = runif(4, min = -0.15, max = 0.15)
     
     # Get current & birth locations
-    birth = birthcountyNames[loc]
-    current = currentcounties[loc]
+    birth = birthcountyNames[group[loc]]
+    current = currentcounties[group[loc]]
     
     # Get the rough centre of each polygon
     meanB <- coordinates(polygonCoords[[birth]])
     meanC <- coordinates(polygonCoords[[current]])
     
-    # Get the name of isolate and remove year prefix
-    withprefix <- strsplit(rownames(allDist)[loc], split = "_")[[1]][1]
-    noprefix <- strsplit(withprefix, split = "-")[[1]][2]
-    
     Arrows(meanB[1]+roll[1], meanB[2]+roll[2], meanC[1], meanC[2], col = alpha(colour, 0.6), length = 5, lwd = 25, arr.type = "circle", arr.length = 2, arr.width = 2)
     midx = ((meanC[1]) - (((meanC[1]) - (meanB[1]+roll[1]))/2))
     midy = ((meanC[2]) - (((meanC[2]) - (meanB[2]+roll[2]))/2))
     m = atan(((meanC[2]) - (meanB[2]+roll[2]))/((meanC[1]) - (meanB[1]+roll[1])))*(180/pi)
-    text(x=midx, y = midy, labels = noprefix, cex = 5,srt=m)
+    #text(x=midx, y = midy, labels = atog[loc], cex = 10,srt=m)
   }
 }
 
